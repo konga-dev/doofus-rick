@@ -1,0 +1,38 @@
+{
+  "name": "qqt-discord-bot",
+  "version": "1.0.0",
+  "description": "An amazingly useful Discord Bot for desperate CS students",
+  "main": "src/App.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc -p .",
+    "debug": "nodemon src/App.ts debug",
+    "format": "prettier --write .",
+    "deploy-commands": "node scripts/deploy-commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josholaus/qqt-discord-bot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/josholaus/qqt-discord-bot/issues"
+  },
+  "homepage": "https://github.com/josholaus/qqt-discord-bot#readme",
+  "devDependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@types/node": "^16.11.10",
+    "prettier": "^2.5.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "log4js": "^6.3.0",
+    "nodemon": "^2.0.15"
+  }
+}
