@@ -20,7 +20,7 @@ jobs:
           npm i -D && npm run build
       - name: docker build
         run: |
-          docker build . -t docker.pkg.github.com/josholaus/qqt-discord-bot:latest
+          docker build . -t docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest
       - name: docker push
         run: |
-          docker push docker.pkg.github.com/josholaus/qqt-discord-bot:latest
+          docker push docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest
