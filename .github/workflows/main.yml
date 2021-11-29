@@ -15,6 +15,9 @@ jobs:
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
+      - name: npm build
+        run: |
+          npm run build
       - name: docker build
         run: |
           docker build . -t docker.pkg.github.com/josholaus/qqt-discord-bot:latest
