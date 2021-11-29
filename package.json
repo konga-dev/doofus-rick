@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p .",
+    "build-docker": "npm run build && docker build -t com.josholaus.qqt-discord-bot:latest",
     "debug": "nodemon src/App.ts debug",
     "format": "prettier --write .",
     "deploy-commands": "node scripts/deploy-commands.js"
