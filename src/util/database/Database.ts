@@ -55,7 +55,7 @@ export default class Database {
      * @param collectionName name of the collection
      * @returns Promise<WithId<Document>[]>
      */
-    public async all(collectionName: string): Promise<WithId<Document>[]> {        
+    public async all(collectionName: string): Promise<WithId<Document>[]> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
