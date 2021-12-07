@@ -28,7 +28,7 @@ export default class Database {
     }
 
     /**
-     * Connects client to MongoDB cluster
+     * Connects client to MongoDB instance
      * @param databaseName name of MongoDB database
      * @returns Promise<void>
      */
@@ -81,8 +81,9 @@ export default class Database {
      * @param collectionName name of the collection
      * @param filter filter, used to select the documents to update
      * @param update operations to be applied to the documents
+     * @returns Promise<number> modified count
      */
-    public async update(collectionName: string, filter: {}, update: {}) {
+    public async update(collectionName: string, filter: {}, update: {}): Promise<number> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
@@ -94,7 +95,7 @@ export default class Database {
      * deleted documents
      * @param collectionName name of the collection
      * @param filter filter, used to select the documents to delete
-     * @returns Promise<Number>
+     * @returns Promise<Number> deleted count
      */
     public async delete(collectionName: string, filter: {}): Promise<number> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
