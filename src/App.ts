@@ -1,4 +1,5 @@
 import { Client, Intents } from 'discord.js'
+import { ObjectId } from 'mongodb'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'
@@ -7,6 +8,8 @@ import Database from './util/database/Database'
 
 async function main(args: string[]) {
     dotenv.config()
+    new Database(process.env.MONGODB_URI!)
+
     log4js.configure({
         appenders: {
             console: { type: 'console' },
@@ -33,8 +36,8 @@ async function main(args: string[]) {
         CommandRegistry.getCommand(commandName)?.execute(interaction)
     })
 
-    const database = new Database(process.env.MONGODB_URI)
-    await database.connect()
+    const database = Database.getInstance()
+    await database.connect(process.env.DATABASE!)
 
     client.login(process.env.DISCORD_TOKEN)
 }
