@@ -1,5 +1,4 @@
 import { Client, Intents } from 'discord.js'
-import { ObjectId } from 'mongodb'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'

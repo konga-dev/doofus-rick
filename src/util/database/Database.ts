@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, Document, WithId } from 'mongodb'
+import { MongoClient, Db, ObjectId, Document, WithId } from 'mongodb'
 import log4js from 'log4js'
 
 export default class Database {
@@ -11,7 +11,7 @@ export default class Database {
     public constructor(mongodbURI: string) {
         if (mongodbURI === undefined) {
             throw new Error(`ERROR: No connection URI specified!\n
-                Please check your 'MONGODB_URI' variale in the respective .env file.`)
+                Please check your 'MONGODB_URI' variable in the respective .env file.`)
         }
 
         // Initialise MongoDB client
@@ -73,6 +73,19 @@ export default class Database {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
         return await this.database.collection(collectionName).find(filter).toArray()
+    }
+
+    /**
+     * Inserts a single document and returns the document's ObjectID
+     * @param collectionName name of the collection
+     * @param document the document to be inserted
+     * @returns Promise<ObjectId>
+     */
+     public async insert(collectionName: string, document: {}): Promise<ObjectId> {
+        if (!(await this.database.listCollections({ name: collectionName }).next())) {
+            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
+        }
+        return await (await this.database.collection(collectionName).insertOne(document)).insertedId
     }
 
     /**
