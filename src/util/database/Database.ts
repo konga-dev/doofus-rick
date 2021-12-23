@@ -9,6 +9,10 @@ export default class Database {
     private logger: log4js.Logger = log4js.getLogger('Database')
 
     public constructor(mongodbURI: string) {
+        if (Database.instance) {
+            throw new Error(`ERROR: An instance of 'Database' has already been created.`)
+        }
+
         if (mongodbURI === undefined) {
             throw new Error(`ERROR: No connection URI specified!\n
                 Please check your 'MONGODB_URI' variable in the respective .env file.`)
