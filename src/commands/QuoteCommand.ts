@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction } from 'discord.js'
+import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../Command'
 import Quote from '../models/Quote'
 
@@ -10,8 +10,14 @@ export default class QuoteCommand implements Command {
             return
         }
         quote = quote.replace('\\n', '\n')
-        let quoteObject = new Quote(quote, interaction.user.id)
+        const quoteObject = new Quote(quote, interaction.user.id, Date.now())
+        const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
         await quoteObject.create() // this usually never takes more than 3 seconds, so we don't need to defer
-        interaction.reply({ content: quote })
+        const quoteEmbed = new MessageEmbed()
+            .setColor('RANDOM')
+            .setDescription(quoteObject.content)
+            .setFooter(quoteCreator?.nickname ?? 'Unknown author', quoteCreator?.displayAvatarURL() ?? undefined)
+            .setTimestamp(quoteObject.timestamp)
+        interaction.reply({ embeds: [quoteEmbed] })
     }
 }

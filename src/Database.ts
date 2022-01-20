@@ -80,7 +80,7 @@ export default class Database {
     }
 
     /**
-     * Returns the number of documents in a collection
+     * Gets a random document from the collection
      * @param collectionName name of the collection
      * @returns Promise<number>
      */
@@ -88,7 +88,10 @@ export default class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection(collectionName).aggregate([ { $sample: { size: 1} } ]).next()
+        return await this.database
+            .collection(collectionName)
+            .aggregate([{ $sample: { size: 1 } }])
+            .next()
     }
 
     /**
