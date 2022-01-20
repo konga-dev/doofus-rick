@@ -1,5 +1,5 @@
-import { MongoClient, Db, ObjectId, Document, WithId } from 'mongodb'
 import log4js from 'log4js'
+import { Db, Document, MongoClient, ObjectId, WithId } from 'mongodb'
 
 export default class Database {
     private static instance: Database
@@ -80,16 +80,30 @@ export default class Database {
     }
 
     /**
+     * Returns the number of documents in a collection
+     * @param collectionName name of the collection
+     * @returns Promise<number>
+     */
+    public async getRandom(collectionName: string): Promise<Document | null> {
+        if (!(await this.database.listCollections({ name: collectionName }).next())) {
+            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
+        }
+        return await this.database.collection(collectionName).aggregate([ { $sample: { size: 1} } ]).next()
+    }
+
+    /**
      * Inserts a single document and returns the document's ObjectID
      * @param collectionName name of the collection
      * @param document the document to be inserted
      * @returns Promise<ObjectId>
      */
-     public async insert(collectionName: string, document: {}): Promise<ObjectId> {
+    public async insert(collectionName: string, document: {}): Promise<ObjectId> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await (await this.database.collection(collectionName).insertOne(document)).insertedId
+        return await (
+            await this.database.collection(collectionName).insertOne(document)
+        ).insertedId
     }
 
     /**

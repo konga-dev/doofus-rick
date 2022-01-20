@@ -2,12 +2,11 @@ import { Client, Intents } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'
-
-import Database from './util/database/Database'
+import Database from './Database'
 
 async function main(args: string[]) {
     dotenv.config()
-    new Database(process.env.MONGODB_URI!)
+    new Database(process.env.DATABASE_URI!)
 
     log4js.configure({
         appenders: {

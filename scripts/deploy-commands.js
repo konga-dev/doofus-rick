@@ -14,9 +14,16 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-const commands = [new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!')].map((command) =>
-    command.toJSON(),
-)
+const commands = [
+    new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
+    new SlashCommandBuilder()
+        .setName('quote')
+        .setDescription('Stores a quote for later')
+        .addStringOption((option) =>
+            option.setName('quote').setDescription('The quote to be stored').setRequired(true),
+        ),
+    new SlashCommandBuilder().setName('randomquote').setDescription('Gets a random quote to brighten your day!')
+].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)
 rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_QQT_ID), {
