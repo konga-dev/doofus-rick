@@ -6,7 +6,7 @@ import Database from './Database'
 
 async function main(args: string[]) {
     dotenv.config()
-    new Database(process.env.DATABASE_URI!)
+    new Database(process.env.MONGODB_URI!)
 
     log4js.configure({
         appenders: {
