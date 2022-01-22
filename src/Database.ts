@@ -1,5 +1,6 @@
 import log4js from 'log4js'
 import { Db, Document, MongoClient, ObjectId, WithId } from 'mongodb'
+import { HasValidCollection } from './decorators/HasValidCollection'
 
 export default class Database {
     private static instance: Database
@@ -14,8 +15,8 @@ export default class Database {
         }
 
         if (mongodbURI === undefined) {
-            throw new Error(`ERROR: No connection URI specified!\n
-                Please check your 'MONGODB_URI' variable in the respective .env file.`)
+            throw new Error(`ERROR: No connection URI specified! Please check your
+                'MONGODB_URI' variable in the respective .env file.`)
         }
 
         // Initialise MongoDB client
@@ -29,6 +30,10 @@ export default class Database {
 
     public static getInstance(): Database {
         return Database.instance
+    }
+
+    public getDatabase(): Db {
+        return this.database
     }
 
     /**
@@ -59,10 +64,8 @@ export default class Database {
      * @param collectionName name of the collection
      * @returns Promise<WithId<Document>[]>
      */
+    @HasValidCollection()
     public async all(collectionName: string): Promise<WithId<Document>[]> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
         return await this.database.collection(collectionName).find({}).toArray()
     }
 
@@ -72,10 +75,8 @@ export default class Database {
      * @param filter filter, used to seleect the documents to get
      * @returns Promise<WithId<Document>[]>
      */
+    @HasValidCollection()
     public async get(collectionName: string, filter: {}): Promise<WithId<Document>[]> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
         return await this.database.collection(collectionName).find(filter).toArray()
     }
 
@@ -84,12 +85,9 @@ export default class Database {
      * @param collectionName name of the collection
      * @returns Promise<number>
      */
+    @HasValidCollection()
     public async getRandom(collectionName: string): Promise<Document | null> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
-        return await this.database
-            .collection(collectionName)
+        return await this.database.collection(collectionName)
             .aggregate([{ $sample: { size: 1 } }])
             .next()
     }
@@ -100,13 +98,9 @@ export default class Database {
      * @param document the document to be inserted
      * @returns Promise<ObjectId>
      */
+    @HasValidCollection()
     public async insert(collectionName: string, document: {}): Promise<ObjectId> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
-        return await (
-            await this.database.collection(collectionName).insertOne(document)
-        ).insertedId
+        return (await this.database.collection(collectionName).insertOne(document)).insertedId
     }
 
     /**
@@ -117,10 +111,8 @@ export default class Database {
      * @param update operations to be applied to the documents
      * @returns Promise<number> modified count
      */
+    @HasValidCollection()
     public async update(collectionName: string, filter: {}, update: {}): Promise<number> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
         return (await this.database.collection(collectionName).updateMany(filter, update)).modifiedCount
     }
 
@@ -131,10 +123,8 @@ export default class Database {
      * @param filter filter, used to select the documents to delete
      * @returns Promise<Number> deleted count
      */
+    @HasValidCollection()
     public async delete(collectionName: string, filter: {}): Promise<number> {
-        if (!(await this.database.listCollections({ name: collectionName }).next())) {
-            throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
-        }
         return (await this.database.collection(collectionName).deleteMany(filter)).deletedCount
     }
 }
