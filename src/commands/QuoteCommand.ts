@@ -16,7 +16,10 @@ export default class QuoteCommand implements Command {
         const quoteEmbed = new MessageEmbed()
             .setColor('RANDOM')
             .setDescription(quoteObject.content)
-            .setAuthor({ name: quoteCreator?.nickname ?? 'Unknown author', iconURL: quoteCreator?.displayAvatarURL() ?? undefined })
+            .setAuthor({
+                name: quoteCreator?.nickname ?? 'Unknown author',
+                iconURL: quoteCreator?.displayAvatarURL() ?? undefined,
+            })
             .setTimestamp(quoteObject.timestamp)
         interaction.reply({ embeds: [quoteEmbed] })
     }

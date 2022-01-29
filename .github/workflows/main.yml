@@ -1,26 +1,26 @@
 name: Docker Pipeline
 
 on:
-  push:
-    branches: [ main ]
+    push:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: docker login
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-        run: |
-          docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
-      - name: npm build
-        run: |
-          npm i -D && npm run build
-      - name: docker build
-        run: |
-          docker build . -t docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest
-      - name: docker push
-        run: |
-          docker push docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: docker login
+              env:
+                  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+                  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+              run: |
+                  docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
+            - name: npm build
+              run: |
+                  npm i -D && npm run build
+            - name: docker build
+              run: |
+                  docker build . -t docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest
+            - name: docker push
+              run: |
+                  docker push docker.pkg.github.com/josholaus/qqt-discord-bot/bot:latest

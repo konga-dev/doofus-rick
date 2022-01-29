@@ -27,7 +27,7 @@ export default class Quote implements IModel {
         let id = await Database.getInstance().insert(collectionName, {
             content: this.content,
             creator: this.creator,
-            timestamp: this.timestamp
+            timestamp: this.timestamp,
         })
         this.id = id
     }
