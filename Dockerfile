@@ -7,5 +7,6 @@ WORKDIR /home/app/
 COPY dist .
 COPY package.json .
 RUN npm i
+RUN date > ./docker-build-date
 # Application entrypoint here
 CMD ["node", "App.js"]
