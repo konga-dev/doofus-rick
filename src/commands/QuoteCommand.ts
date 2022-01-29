@@ -9,7 +9,7 @@ export default class QuoteCommand implements Command {
             interaction.reply({ content: 'You need to specify a quote!', ephemeral: true })
             return
         }
-        quote = quote.replace('\\n', '\n')
+        quote = quote.replaceAll('\\n', '\n')
         const quoteObject = new Quote(quote, interaction.user.id, Date.now())
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
         await quoteObject.create() // this usually never takes more than 3 seconds, so we don't need to defer
