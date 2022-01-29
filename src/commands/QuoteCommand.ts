@@ -16,8 +16,8 @@ export default class QuoteCommand implements Command {
         const quoteEmbed = new MessageEmbed()
             .setColor('RANDOM')
             .setDescription(quoteObject.content)
-            .setAuthor({
-                name: quoteCreator?.nickname ?? 'Unknown author',
+            .setFooter({
+                text: quoteCreator?.nickname ?? 'Unknown author',
                 iconURL: quoteCreator?.displayAvatarURL() ?? undefined,
             })
             .setTimestamp(quoteObject.timestamp)

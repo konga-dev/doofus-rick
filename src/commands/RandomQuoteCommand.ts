@@ -13,7 +13,10 @@ export default class RandomQuoteCommand implements Command {
         const quoteEmbed = new MessageEmbed()
             .setColor('RANDOM')
             .setDescription(quote.content)
-            .setFooter(quoteCreator?.nickname ?? 'Unknown author', quoteCreator?.displayAvatarURL() ?? undefined)
+            .setFooter({
+                text: quoteCreator?.nickname ?? 'Unknown author',
+                iconURL: quoteCreator?.displayAvatarURL() ?? undefined,
+            })
             .setTimestamp(quote.timestamp)
         interaction.reply({ embeds: [quoteEmbed] })
     }
