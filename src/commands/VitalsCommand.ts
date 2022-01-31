@@ -5,7 +5,7 @@ import Command from '../Command'
 
 export default class VitalsCommand implements Command {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-        const vitalsEmbed = new MessageEmbed().setTitle('Dumb Rick Vitals').setFields([
+        const vitalsEmbed = new MessageEmbed().setTitle('Doofus Rick Vitals').setFields([
             {
                 name: 'Uptime',
                 value: this.uptime(),

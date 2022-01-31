@@ -1,26 +1,26 @@
 {
-  "name": "qqt-discord-bot",
+  "name": "doofus-rick",
   "version": "1.0.0",
   "description": "An amazingly useful Discord Bot for desperate CS students",
   "main": "src/App.ts",
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p .",
-    "build-docker": "npm run build && docker build -t com.josholaus.qqt-discord-bot:latest",
+    "build-docker": "npm run build && docker build -t com.josholaus.doofus-rick:latest",
     "debug": "nodemon src/App.ts debug",
     "format": "prettier --write .",
     "deploy-commands": "node scripts/deploy-commands.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/josholaus/qqt-discord-bot.git"
+    "url": "git+https://github.com/josholaus/doofus-rick.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/josholaus/qqt-discord-bot/issues"
+    "url": "https://github.com/josholaus/doofus-rick/issues"
   },
-  "homepage": "https://github.com/josholaus/qqt-discord-bot#readme",
+  "homepage": "https://github.com/josholaus/doofus-rick#readme",
   "devDependencies": {
     "@discordjs/builders": "^0.12.0",
     "@discordjs/rest": "^0.3.0",

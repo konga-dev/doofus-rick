@@ -23,7 +23,7 @@ const commands = [
             option.setName('quote').setDescription('The quote to be stored').setRequired(true),
         ),
     new SlashCommandBuilder().setName('randomquote').setDescription('Gets a random quote to brighten your day!'),
-    new SlashCommandBuilder().setName('vitals').setDescription("Shows Dumb Rick's vital signs"),
+    new SlashCommandBuilder().setName('vitals').setDescription("Shows Doofus Rick's vital signs"),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)
