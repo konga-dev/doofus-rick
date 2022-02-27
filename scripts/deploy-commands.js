@@ -24,6 +24,10 @@ const commands = [
         ),
     new SlashCommandBuilder().setName('randomquote').setDescription('Gets a random quote to brighten your day!'),
     new SlashCommandBuilder().setName('vitals').setDescription("Shows Doofus Rick's vital signs"),
+    new SlashCommandBuilder()
+        .setName('votekick')
+        .setDescription('Votes to kick someone from the voice channel')
+        .addUserOption((option) => option.setName('user').setDescription('The user to be kicked').setRequired(true)),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)

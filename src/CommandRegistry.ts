@@ -3,6 +3,7 @@ import PingCommand from './commands/PingCommand'
 import QuoteCommand from './commands/QuoteCommand'
 import RandomQuoteCommand from './commands/RandomQuoteCommand'
 import VitalsCommand from './commands/VitalsCommand'
+import VotekickCommand from './commands/VotekickCommand'
 interface CommandEntry {
     name: string
     command: Command
@@ -24,6 +25,10 @@ const commands: CommandEntry[] = [
     {
         name: 'vitals',
         command: new VitalsCommand(),
+    },
+    {
+        name: 'votekick',
+        command: new VotekickCommand(),
     },
 ]
 
