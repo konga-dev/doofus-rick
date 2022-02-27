@@ -11,9 +11,10 @@ interface VotekickData {
 export default class VotekickCommand implements Command {
     private readonly NEEDED_VOTES_RATIO = 0.66 // 2/3 majority
     private readonly kickMap = new Map<string, string[]>() // key: victimSnowflake, value: executorSnowflake[]
+    private clearInterval: NodeJS.Timer
 
     constructor() {
-        setInterval(() => {
+        this.clearInterval = setInterval(() => {
             this.kickMap.clear()
         }, 1000 * 60 * 5) // Clear cache every 5 minutes
     }
@@ -82,6 +83,7 @@ export default class VotekickCommand implements Command {
                     neededVotes,
                 })
             } else {
+                this.clearInterval.refresh() // reset the timer
                 this.kickMap.set(user.id, [executor.id])
                 await interaction.reply({
                     content: `<@${executor.id}> has started a votekick for <@${user.id}> (1/${neededVotes})`,
