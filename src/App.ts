@@ -1,7 +1,9 @@
 import { Client, Intents } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
+
 import CommandRegistry from './CommandRegistry'
+import { TaskScheduler } from './TaskScheduler'
 import Database from './Database'
 
 async function main(args: string[]) {
@@ -24,6 +26,7 @@ async function main(args: string[]) {
 
     client.once('ready', () => {
         logger.info('Successfully connected to Discord')
+        new TaskScheduler(client).registerTasks()
     })
 
     client.on('interactionCreate', async (interaction) => {
@@ -34,8 +37,7 @@ async function main(args: string[]) {
         CommandRegistry.getCommand(commandName)?.execute(interaction)
     })
 
-    const database = Database.getInstance()
-    await database.connect(process.env.DATABASE!)
+    await Database.getInstance().connect(process.env.DATABASE!)
 
     client.login(process.env.DISCORD_TOKEN)
 }
