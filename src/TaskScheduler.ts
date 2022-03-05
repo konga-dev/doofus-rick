@@ -42,7 +42,6 @@ class TaskScheduler {
             }
 
             cron.schedule(task.schedule, async () => {
-                console.log('now scheduling task')
                 await task.task.execute()
             }).start()
         })

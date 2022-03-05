@@ -11,7 +11,6 @@ class CakeDayTask implements ITextChannelTask {
     }
 
     async execute(): Promise<void> {
-        console.log('oida i wea etz executed')
         let cakeQuotes = await this.getCakeQuotes()
 
         if (!cakeQuotes) {
