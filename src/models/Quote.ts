@@ -15,6 +15,18 @@ const collectionName = 'quote'
 export default class Quote implements IModel {
     constructor(public content: string, public creator: string, public timestamp: number, private id?: ObjectId) {}
 
+    static async all(): Promise<Quote[] | null> {
+        let documents = await Database.getInstance().all(collectionName)
+        if (!documents) {
+            return null
+        }
+
+        let quotes: Quote[] = []
+        documents.forEach((doc) => quotes.push(new Quote(doc.content, doc.creator, doc.timestamp, doc._id)))
+
+        return quotes
+    }
+
     static async getRandom(): Promise<Quote | null> {
         let quote = await Database.getInstance().getRandom(collectionName)
         if (!quote) {
