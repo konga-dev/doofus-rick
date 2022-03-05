@@ -1,9 +1,9 @@
 import { exec } from 'child_process'
 import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
 import fs from 'fs'
-import Command from '../Command'
+import { ICommand } from './ICommand'
 
-export default class VitalsCommand implements Command {
+export default class VitalsCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
         const vitalsEmbed = new MessageEmbed().setTitle('Doofus Rick Vitals').setFields([
             {

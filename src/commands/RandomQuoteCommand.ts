@@ -1,8 +1,8 @@
 import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../Command'
+import { ICommand } from './ICommand'
 import Quote from '../models/Quote'
 
-export default class RandomQuoteCommand implements Command {
+export default class RandomQuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
         const quote = await Quote.getRandom()
         if (!quote) {

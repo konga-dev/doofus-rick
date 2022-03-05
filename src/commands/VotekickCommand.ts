@@ -1,5 +1,5 @@
 import { CacheType, Collection, CommandInteraction, GuildMember } from 'discord.js'
-import Command from '../Command'
+import { ICommand } from './ICommand'
 
 interface VotekickData {
     victim: GuildMember
@@ -8,7 +8,7 @@ interface VotekickData {
     neededVotes: number
 }
 
-export default class VotekickCommand implements Command {
+export default class VotekickCommand implements ICommand {
     private readonly NEEDED_VOTES_RATIO = 0.66 // 2/3 majority
     private readonly kickMap = new Map<string, string[]>() // key: victimSnowflake, value: executorSnowflake[]
     private clearInterval: NodeJS.Timer

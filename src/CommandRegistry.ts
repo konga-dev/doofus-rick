@@ -1,12 +1,9 @@
-import Command from './Command'
-import PingCommand from './commands/PingCommand'
-import QuoteCommand from './commands/QuoteCommand'
-import RandomQuoteCommand from './commands/RandomQuoteCommand'
-import VitalsCommand from './commands/VitalsCommand'
-import VotekickCommand from './commands/VotekickCommand'
+import { ICommand } from './commands/ICommand'
+import { PingCommand, VitalsCommand, QuoteCommand, RandomQuoteCommand, VotekickCommand } from './commands'
+
 interface CommandEntry {
     name: string
-    command: Command
+    command: ICommand
 }
 
 const commands: CommandEntry[] = [
@@ -33,7 +30,7 @@ const commands: CommandEntry[] = [
 ]
 
 class CommandRegistry {
-    getCommand(name: string): Command | undefined {
+    getCommand(name: string): ICommand | undefined {
         return commands.find((entry) => entry.name === name)?.command
     }
 }

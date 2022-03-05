@@ -1,5 +1,7 @@
 import { CommandInteraction } from 'discord.js'
 
-export default interface Command {
+interface ICommand {
     execute(interaction: CommandInteraction): void
 }
+
+export { ICommand }
