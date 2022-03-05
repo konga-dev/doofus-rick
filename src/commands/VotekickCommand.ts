@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, User } from 'discord.js'
+import { CacheType, Collection, CommandInteraction, GuildMember } from 'discord.js'
 import Command from '../Command'
 
 interface VotekickData {
@@ -20,27 +20,29 @@ export default class VotekickCommand implements Command {
     }
 
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-        let user = interaction.options.getUser('user')
-        let executor = interaction.member?.user
-        if (!user || !executor) {
+        const user = interaction.options.getUser('user')
+        const executor = interaction.member?.user
+        const guild = interaction.guild
+        if (!user) {
             await interaction.reply({ content: 'You need to specify a user!', ephemeral: true })
             return
         }
-        let guildUser = interaction.guild?.members.cache.find((member) => member.id == (user as User).id)
-        if (!guildUser) {
-            await interaction.reply({ content: 'This user could not be found', ephemeral: true })
+        if (!guild || !executor) {
+            await interaction.reply({ content: 'This command can only be executed in a guild', ephemeral: true })
             return
         }
-        let guildExecutor = interaction.guild?.members.cache.find((member) => member.id == (executor as User).id)
-        if (!guildExecutor) {
-            await interaction.reply({ content: 'Your user could not be found', ephemeral: true }) // TODO: ???
+        const guildMembers = guild!.members.cache
+        const guildUser = await guildMembers.find((member) => member.id == user!.id)?.fetch()
+        const guildExecutor = await guildMembers.find((member) => member.id == executor!.id)?.fetch()
+        if (!guildUser || !guildExecutor) {
+            await interaction.reply({ content: 'User could not be found', ephemeral: true })
             return
         }
 
         if (
             !guildExecutor.voice.channel ||
             !guildUser.voice.channel ||
-            guildExecutor.voice.channelId !== guildUser.voice.channelId
+            guildExecutor.voice.channel.id !== guildUser.voice.channel.id
         ) {
             await interaction.reply({
                 content: 'Sorry, you can only votekick a user in your voice channel',
