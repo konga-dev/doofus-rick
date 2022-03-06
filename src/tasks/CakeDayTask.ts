@@ -3,7 +3,7 @@ import { MessageEmbed, TextChannel } from 'discord.js'
 import { ITextChannelTask } from './ITextChannelTask'
 import Quote from '../models/Quote'
 
-class CakeDayTask implements ITextChannelTask {
+export default class CakeDayTask implements ITextChannelTask {
     private channel: TextChannel
 
     constructor(channel: TextChannel) {
@@ -57,5 +57,3 @@ class CakeDayTask implements ITextChannelTask {
         return cakeQuotes
     }
 }
-
-export { CakeDayTask }

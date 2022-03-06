@@ -2,7 +2,7 @@ import { Client, TextChannel } from 'discord.js'
 import * as cron from 'node-cron'
 
 import { ITask } from './tasks/ITask'
-import { CakeDayTask } from './tasks/CakeDayTask'
+import { CakeDayTask } from './tasks/'
 
 interface TaskEntry {
     name: string
