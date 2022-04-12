@@ -24,7 +24,9 @@ class TaskScheduler {
             {
                 name: 'cakeday',
                 schedule: '* 20 * * *', // every day at 8 PM / 20:00
-                task: new CakeDayTask(this.client.channels.cache.find((channel) => channel.id === '691751152034906145') as TextChannel)
+                task: new CakeDayTask(
+                    this.client.channels.cache.find((channel) => channel.id === '691751152034906145') as TextChannel,
+                ),
             },
         ]
 
