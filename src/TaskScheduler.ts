@@ -1,5 +1,6 @@
 import { Client, TextChannel } from 'discord.js'
 import * as cron from 'node-cron'
+import log4js from 'log4js'
 
 import { ITask } from './tasks/ITask'
 import { CakeDayTask } from './tasks/'
@@ -14,6 +15,7 @@ class TaskScheduler {
     private static instance: TaskScheduler
     private client: Client
     private tasks: TaskEntry[]
+    private logger = log4js.getLogger('Bootstrap')
 
     constructor(client: Client) {
         if (TaskScheduler.instance) {
@@ -42,10 +44,11 @@ class TaskScheduler {
             if (!cron.validate(task.schedule)) {
                 throw new Error(`ERROR: Invalid cron schedule expression for task '${task.name}'`)
             }
-
             cron.schedule(task.schedule, async () => {
+                this.logger.debug(`Running task '${task.name}'`)
                 await task.task.execute()
             }).start()
+            this.logger.info(`Registered task '${task.name}' scheduled for '${task.schedule}'`)
         })
     }
 }
