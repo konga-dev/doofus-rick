@@ -28,6 +28,9 @@ const commands = [
         .setName('votekick')
         .setDescription('Votes to kick someone from the voice channel')
         .addUserOption((option) => option.setName('user').setDescription('The user to be kicked').setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('noproductive')
+        .setDescription('Moves everyone from the productive zone to general'),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)

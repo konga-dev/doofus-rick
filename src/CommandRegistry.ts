@@ -1,5 +1,6 @@
 import { ICommand } from './commands/ICommand'
 import { PingCommand, VitalsCommand, QuoteCommand, RandomQuoteCommand, VotekickCommand } from './commands'
+import NoProductiveCommand from './commands/NoProductiveCommand'
 
 interface CommandEntry {
     name: string
@@ -27,6 +28,10 @@ const commands: CommandEntry[] = [
         name: 'votekick',
         command: new VotekickCommand(),
     },
+    {
+        name: 'noproductive',
+        command: new NoProductiveCommand()
+    }
 ]
 
 class CommandRegistry {
