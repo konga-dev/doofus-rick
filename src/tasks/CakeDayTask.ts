@@ -41,13 +41,18 @@ export default class CakeDayTask implements ITextChannelTask {
         }
 
         let today = new Date()
-        return quotes.filter((quote) => {
-            let dateOfQuote = new Date(quote.timestamp)
-            return dateOfQuote.getFullYear() !== today.getFullYear() 
-                    && dateOfQuote.getMonth() === today.getMonth()
-                    && dateOfQuote.getDate() === today.getDate()
-        }).map((quote) => {
-            return [quote, today.getFullYear() - new Date(quote.timestamp).getFullYear()]
-        })
+
+        return quotes
+            .filter((quote) => {
+                let dateOfQuote = new Date(quote.timestamp)
+                return (
+                    dateOfQuote.getFullYear() !== today.getFullYear() &&
+                    dateOfQuote.getMonth() === today.getMonth() &&
+                    dateOfQuote.getDate() === today.getDate()
+                )
+            })
+            .map((quote) => {
+                return [quote, today.getFullYear() - new Date(quote.timestamp).getFullYear()]
+            })
     }
 }
