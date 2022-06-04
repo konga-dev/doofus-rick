@@ -44,6 +44,9 @@ class TaskScheduler {
             if (!cron.validate(task.schedule)) {
                 throw new Error(`ERROR: Invalid cron schedule expression for task '${task.name}'`)
             }
+
+            task.task.execute()
+
             cron.schedule(task.schedule, async () => {
                 this.logger.debug(`Running task '${task.name}'`)
                 await task.task.execute()
