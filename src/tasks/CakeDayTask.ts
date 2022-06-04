@@ -28,7 +28,7 @@ export default class CakeDayTask implements ITextChannelTask {
                     text: creator?.nickname ?? 'Unknown author',
                     iconURL: creator?.displayAvatarURL() ?? undefined,
                 })
-                .setTimestamp(quote[0].timestamp * 1000)
+                .setTimestamp(quote[0].timestamp)
 
             this.channel.send({ embeds: [embed] })
         })
@@ -40,20 +40,14 @@ export default class CakeDayTask implements ITextChannelTask {
             return null
         }
 
-        // Filter quotes
         let today = new Date()
-        let cakeQuotes: [Quote, number][] = []
-        quotes.forEach((quote) => {
-            let quoteDate = new Date(quote.timestamp * 1000)
-            if (
-                today.getDate() === quoteDate.getDate() &&
-                today.getMonth() === quoteDate.getMonth() &&
-                today.getFullYear() !== quoteDate.getFullYear()
-            ) {
-                cakeQuotes.push([quote, today.getFullYear() - quoteDate.getFullYear()])
-            }
+        return quotes.filter((quote) => {
+            let dateOfQuote = new Date(quote.timestamp)
+            return dateOfQuote.getFullYear() !== today.getFullYear() 
+                    && dateOfQuote.getMonth() === today.getMonth()
+                    && dateOfQuote.getDate() === today.getDate()
+        }).map((quote) => {
+            return [quote, today.getFullYear() - new Date(quote.timestamp).getFullYear()]
         })
-
-        return cakeQuotes
     }
 }
