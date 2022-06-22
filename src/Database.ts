@@ -33,6 +33,7 @@ export default class Database {
 
     /**
      * Connects client to MongoDB instance
+     * 
      * @param databaseName name of MongoDB database
      * @returns Promise<void>
      */
@@ -56,6 +57,7 @@ export default class Database {
 
     /**
      * Returns all existing documents in a collection
+     * 
      * @param collectionName name of the collection
      * @returns Promise<WithId<Document>[]>
      */
@@ -68,6 +70,7 @@ export default class Database {
 
     /**
      * Returns all documents that match the passed filter
+     * 
      * @param collectionName name of the collection
      * @param filter filter, used to seleect the documents to get
      * @returns Promise<WithId<Document>[]>
@@ -81,8 +84,9 @@ export default class Database {
 
     /**
      * Gets a random document from the collection
+     * 
      * @param collectionName name of the collection
-     * @returns Promise<number>
+     * @returns Promise<Document | null>
      */
     public async getRandom(collectionName: string): Promise<Document | null> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
@@ -96,6 +100,7 @@ export default class Database {
 
     /**
      * Inserts a single document and returns the document's ObjectID
+     * 
      * @param collectionName name of the collection
      * @param document the document to be inserted
      * @returns Promise<ObjectId>
@@ -112,6 +117,7 @@ export default class Database {
     /**
      * Updates all documents that match the passed filter with specified update operations
      * and returns the count of modified documents
+     * 
      * @param collectionName name of the collection
      * @param filter filter, used to select the documents to update
      * @param update operations to be applied to the documents
@@ -127,6 +133,7 @@ export default class Database {
     /**
      * Deletes all documents that match the passed filter and returns the count of
      * deleted documents
+     * 
      * @param collectionName name of the collection
      * @param filter filter, used to select the documents to delete
      * @returns Promise<Number> deleted count
