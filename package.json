@@ -24,9 +24,9 @@
   "devDependencies": {
     "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.5.0",
-    "@types/node": "^18.0.1",
+    "@types/node": "^18.0.3",
     "@types/node-cron": "^3.0.2",
-    "nodemon": "^2.0.18",
+    "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.2",
@@ -35,7 +35,7 @@
   "dependencies": {
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
-    "log4js": "^6.5.2",
+    "log4js": "^6.6.0",
     "mongodb": "^4.7.0",
     "node-cron": "^3.0.1",
     "uuid": "^8.3.2"
