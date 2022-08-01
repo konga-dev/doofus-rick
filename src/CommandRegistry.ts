@@ -30,8 +30,8 @@ const commands: CommandEntry[] = [
     },
     {
         name: 'noproductive',
-        command: new NoProductiveCommand()
-    }
+        command: new NoProductiveCommand(),
+    },
 ]
 
 class CommandRegistry {

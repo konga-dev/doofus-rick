@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
+import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { ICommand } from './ICommand'
 import Quote from '../models/Quote'
 
@@ -10,8 +10,8 @@ export default class RandomQuoteCommand implements ICommand {
             return
         }
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === quote.creator)
-        const quoteEmbed = new MessageEmbed()
-            .setColor('RANDOM')
+        const quoteEmbed = new EmbedBuilder()
+            .setColor('Random')
             .setDescription(quote.content)
             .setFooter({
                 text: quoteCreator?.nickname ?? 'Unknown author',

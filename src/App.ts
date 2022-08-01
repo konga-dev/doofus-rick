@@ -1,4 +1,4 @@
-import { Client, Intents } from 'discord.js'
+import { Client, GatewayIntentBits } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 
@@ -22,11 +22,11 @@ async function main(args: string[]) {
     const logger = log4js.getLogger('Bootstrap')
     const client = new Client({
         intents: [
-            Intents.FLAGS.GUILDS,
-            Intents.FLAGS.GUILD_PRESENCES,
-            Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_MEMBERS,
-            Intents.FLAGS.GUILD_VOICE_STATES,
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildPresences,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMembers,
+            GatewayIntentBits.GuildVoiceStates,
         ],
     })
 

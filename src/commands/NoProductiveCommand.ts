@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, VoiceChannel } from 'discord.js'
+import { CacheType, ChannelType, Collection, CommandInteraction, GuildMember, VoiceChannel } from 'discord.js'
 import { ICommand } from './ICommand'
 
 const PRODUCTIVE_AREA = '881916495012180028'
@@ -21,7 +21,7 @@ export default class NoProductiveCommand implements ICommand {
         let voiceChannels = interaction.guild?.channels.cache.filter((channel) => channel instanceof VoiceChannel)
         let productiveChannels = voiceChannels?.filter((channel) => channel.parent?.id == PRODUCTIVE_AREA)
         let generalChannel = interaction.guild?.channels.cache.find(
-            (channel) => channel.id == GENERAL_CHANNEL && channel.isVoice(),
+            (channel) => channel.id == GENERAL_CHANNEL && channel.type === ChannelType.GuildVoice,
         )
         if (!generalChannel) {
             await interaction.reply({ content: 'The general channel is not configured correctly', ephemeral: true })

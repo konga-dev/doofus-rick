@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel } from 'discord.js'
+import { EmbedBuilder, TextChannel } from 'discord.js'
 
 import { ITextChannelTask } from './ITextChannelTask'
 import Quote from '../models/Quote'
@@ -20,9 +20,9 @@ export default class CakeDayTask implements ITextChannelTask {
         cakeQuotes.forEach((quote) => {
             let creator = this.channel.members.find((member) => member.id === quote[0].creator)
 
-            let embed = new MessageEmbed()
+            let embed = new EmbedBuilder()
                 .setTitle(`Look who is turning **${quote[1]}** today!`)
-                .setColor('RANDOM')
+                .setColor('Random')
                 .setDescription(quote[0].content)
                 .setFooter({
                     text: creator?.nickname ?? 'Unknown author',
