@@ -31,6 +31,7 @@ const commands = [
     new SlashCommandBuilder()
         .setName('noproductive')
         .setDescription('Moves everyone from the productive zone to general'),
+    new SlashCommandBuilder().setName('chuen').setDescription('Who wants to chill?'),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)

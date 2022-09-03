@@ -1,6 +1,5 @@
 import { ICommand } from './commands/ICommand'
-import { PingCommand, VitalsCommand, QuoteCommand, RandomQuoteCommand, VotekickCommand } from './commands'
-import NoProductiveCommand from './commands/NoProductiveCommand'
+import * as Commands from './commands'
 
 interface CommandEntry {
     name: string
@@ -10,27 +9,31 @@ interface CommandEntry {
 const commands: CommandEntry[] = [
     {
         name: 'ping',
-        command: new PingCommand(),
+        command: new Commands.PingCommand(),
     },
     {
         name: 'quote',
-        command: new QuoteCommand(),
+        command: new Commands.QuoteCommand(),
     },
     {
         name: 'randomquote',
-        command: new RandomQuoteCommand(),
+        command: new Commands.RandomQuoteCommand(),
     },
     {
         name: 'vitals',
-        command: new VitalsCommand(),
+        command: new Commands.VitalsCommand(),
     },
     {
         name: 'votekick',
-        command: new VotekickCommand(),
+        command: new Commands.VotekickCommand(),
     },
     {
         name: 'noproductive',
-        command: new NoProductiveCommand(),
+        command: new Commands.NoProductiveCommand(),
+    },
+    {
+        name: 'chuen',
+        command: new Commands.ChuenCommand(),
     },
 ]
 
