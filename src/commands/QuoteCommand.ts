@@ -5,10 +5,6 @@ import Quote from '../models/Quote'
 export default class QuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
         let quote = interaction.options.get('quote')
-        if (!quote || typeof quote !== 'string') {
-            interaction.reply({ content: 'You need to specify a quote!', ephemeral: true })
-            return
-        }
         let stringQuote = (quote as string).replaceAll('\\n', '\n')
         const quoteObject = new Quote(stringQuote, interaction.user.id, Date.now())
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
