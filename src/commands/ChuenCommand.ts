@@ -48,6 +48,10 @@ export default class ChuenCommand implements ICommand {
         let onlineUsers = chuenUsers.filter(
             (member) => member.presence?.status === 'online' || member.presence?.status === 'dnd',
         )
+        if (onlineUsers.size == 0) {
+            await interaction.reply({ content: 'keiner is online zum chün', ephemeral: true })
+            return
+        }
         let successfulUsers = []
         for (let user of onlineUsers.values()) {
             try {
