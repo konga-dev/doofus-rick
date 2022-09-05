@@ -5,8 +5,8 @@
   "main": "src/App.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc -p .",
-    "build-docker": "npm run build && docker build -t com.josholaus.doofus-rick:latest",
+    "build": "yarn clean && tsc -p .",
+    "build-docker": "yarn build && docker build -t com.josholaus.doofus-rick:latest",
     "debug": "nodemon src/App.ts debug",
     "format": "prettier --write .",
     "deploy-commands": "node scripts/deploy-commands.js"
