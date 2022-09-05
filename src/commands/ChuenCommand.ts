@@ -5,9 +5,7 @@ import {
     ButtonStyle,
     CacheType,
     CollectorFilter,
-    CommandInteraction,
-    InteractionCollector,
-    InteractionResponse,
+    CommandInteraction
 } from 'discord.js'
 import { ICommand } from './ICommand'
 
