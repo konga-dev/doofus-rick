@@ -1,4 +1,14 @@
-import { CacheType, CommandInteraction } from 'discord.js'
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    CacheType,
+    CollectorFilter,
+    CommandInteraction,
+    InteractionCollector,
+    InteractionResponse,
+} from 'discord.js'
 import { ICommand } from './ICommand'
 
 const CHUEN_USERS = [
@@ -28,8 +38,26 @@ const MESSAGES = [
     'he he he discord chün mitn joshi zahd di doch save oda',
 ]
 
+const CHUEN_BUTTON_ID = 'chuen_send'
+
 const getRandomMessage = () => {
     return MESSAGES[Math.floor(Math.random() * MESSAGES.length)]
+}
+
+const getOnlineUsers = async (interaction: CommandInteraction) => {
+    const chuenUsers = (await interaction.guild?.members.fetch())?.filter((member) =>
+        CHUEN_USERS.includes(member.user.id),
+    )
+    if (!chuenUsers) {
+        throw new Error('discord sagt na')
+    }
+    const onlineUsers = chuenUsers.filter(
+        (member) => member.presence?.status === 'online' || member.presence?.status === 'dnd',
+    )
+    if (onlineUsers.size == 0) {
+        throw new Error('keiner is online zum chün')
+    }
+    return onlineUsers
 }
 
 export default class ChuenCommand implements ICommand {
@@ -38,30 +66,42 @@ export default class ChuenCommand implements ICommand {
             await interaction.reply({ content: 'des deaf lei da joshi', ephemeral: true })
             return
         }
-        let chuenUsers = (await interaction.guild?.members.fetch())?.filter((member) =>
-            CHUEN_USERS.includes(member.user.id),
-        )
-        if (!chuenUsers) {
-            await interaction.reply({ content: 'discord sagt na', ephemeral: true })
+
+        const onlineUsers = await getOnlineUsers(interaction).catch((error) => {
+            interaction.reply({ content: error.message, ephemeral: true })
+        })
+        if (!onlineUsers) {
             return
         }
-        let onlineUsers = chuenUsers.filter(
-            (member) => member.presence?.status === 'online' || member.presence?.status === 'dnd',
+
+        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder().setCustomId(CHUEN_BUTTON_ID).setLabel('leid nervn').setStyle(ButtonStyle.Primary),
         )
-        if (onlineUsers.size == 0) {
-            await interaction.reply({ content: 'keiner is online zum chün', ephemeral: true })
+        const filter: CollectorFilter<any> = (i: ButtonInteraction) =>
+            i.customId === CHUEN_BUTTON_ID && i.user.id === '155046312411267072'
+        const collector = interaction.channel?.createMessageComponentCollector({ filter, time: 15000 })
+        if (!collector) {
+            await interaction.reply({ content: 'discord sagt na (could not create collector)', ephemeral: true })
             return
         }
-        let successfulUsers = []
-        for (let user of onlineUsers.values()) {
-            try {
-                ;(await user.createDM()).send(getRandomMessage())
-                successfulUsers.push(user)
-            } catch (_) {}
-        }
+        collector.on('collect', async (i) => {
+            let successfulUsers = []
+            for (let user of onlineUsers.values()) {
+                try {
+                    ;(await user.createDM()).send(getRandomMessage())
+                    successfulUsers.push(user)
+                } catch (_) {}
+            }
+            await i.update({
+                content: 'hab folgende leid gnervt: ' + successfulUsers.map((member) => member.displayName).join(', '),
+                components: []
+            })
+        })
         await interaction.reply({
-            content: 'hab folgende leid gnervt: ' + successfulUsers.map((member) => member.displayName).join(', '),
+            content:
+                'folgende leid sein online zum chün: ' + onlineUsers.map((member) => member.displayName).join(', '),
             ephemeral: true,
+            components: [row],
         })
     }
 }
