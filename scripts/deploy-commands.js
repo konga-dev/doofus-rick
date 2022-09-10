@@ -32,6 +32,11 @@ const commands = [
         .setName('noproductive')
         .setDescription('Moves everyone from the productive zone to general'),
     new SlashCommandBuilder().setName('chuen').setDescription('Who wants to chill?'),
+    new SlashCommandBuilder()
+        .setName('send')
+        .setDescription('Sends a message')
+        .addStringOption((option) => option.setName('id').setDescription('The target user id').setRequired(true))
+        .addStringOption((option) => option.setName('message').setDescription('The message to send').setRequired(true)),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)

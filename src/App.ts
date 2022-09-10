@@ -1,10 +1,10 @@
-import { Client, GatewayIntentBits } from 'discord.js'
+import { ChannelType, Client, EmbedBuilder, GatewayIntentBits, Partials } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 
 import CommandRegistry from './CommandRegistry'
-import { TaskScheduler } from './TaskScheduler'
 import Database from './Database'
+import { TaskScheduler } from './TaskScheduler'
 
 async function main(args: string[]) {
     dotenv.config()
@@ -27,7 +27,9 @@ async function main(args: string[]) {
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.GuildMembers,
             GatewayIntentBits.GuildVoiceStates,
+            GatewayIntentBits.DirectMessages,
         ],
+        partials: [Partials.Channel],
     })
 
     client.once('ready', () => {
@@ -41,6 +43,26 @@ async function main(args: string[]) {
         }
         const { commandName } = interaction
         CommandRegistry.getCommand(commandName)?.execute(interaction)
+    })
+
+    client.on('messageCreate', async (interaction) => {
+        if (interaction.author.bot || interaction.channel.type != ChannelType.DM) {
+            return
+        }
+        const josh = await client.users.fetch('155046312411267072')
+        const joshDMs = await josh.createDM()
+        const embed = new EmbedBuilder()
+            .setColor('Random')
+            .setTitle(`${interaction.author.tag} wrote:`)
+            .setDescription(interaction.content.length > 0 ? interaction.content : 'No content')
+            .setFooter({
+                text: `ID: ${interaction.author.id}`,
+            })
+        const attachment = interaction.attachments.first()
+        if (attachment) {
+            embed.setImage(attachment.url)
+        }
+        joshDMs.send({ embeds: [embed] })
     })
 
     await Database.getInstance().connect(process.env.DATABASE!)

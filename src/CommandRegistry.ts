@@ -35,6 +35,10 @@ const commands: CommandEntry[] = [
         name: 'chuen',
         command: new Commands.ChuenCommand(),
     },
+    {
+        name: 'send',
+        command: new Commands.SendCommand(),
+    }
 ]
 
 class CommandRegistry {
