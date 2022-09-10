@@ -38,7 +38,7 @@ const commands: CommandEntry[] = [
     {
         name: 'send',
         command: new Commands.SendCommand(),
-    }
+    },
 ]
 
 class CommandRegistry {

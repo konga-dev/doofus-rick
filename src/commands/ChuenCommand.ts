@@ -5,7 +5,7 @@ import {
     ButtonStyle,
     CacheType,
     CollectorFilter,
-    CommandInteraction
+    CommandInteraction,
 } from 'discord.js'
 import { ICommand } from './ICommand'
 
@@ -92,7 +92,7 @@ export default class ChuenCommand implements ICommand {
             }
             await i.update({
                 content: 'hab folgende leid gnervt: ' + successfulUsers.map((member) => member.displayName).join(', '),
-                components: []
+                components: [],
             })
         })
         await interaction.reply({
