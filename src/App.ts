@@ -1,10 +1,13 @@
-import { ChannelType, Client, EmbedBuilder, GatewayIntentBits, Partials } from 'discord.js'
+import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
 
+import * as AutoResponseListener from './listener/AutoResponseListener'
 import CommandRegistry from './CommandRegistry'
 import Database from './Database'
 import { TaskScheduler } from './TaskScheduler'
+
+const joshId = '155046312411267072'
 
 async function main(args: string[]) {
     dotenv.config()
@@ -32,12 +35,12 @@ async function main(args: string[]) {
         partials: [Partials.Channel],
     })
 
-    client.once('ready', () => {
+    client.once(Events.ClientReady, () => {
         logger.info('Successfully connected to Discord')
         new TaskScheduler(client).registerTasks()
     })
 
-    client.on('interactionCreate', async (interaction) => {
+    client.on(Events.InteractionCreate, async (interaction) => {
         if (!interaction.isCommand()) {
             return
         }
@@ -45,11 +48,17 @@ async function main(args: string[]) {
         CommandRegistry.getCommand(commandName)?.execute(interaction)
     })
 
-    client.on('messageCreate', async (interaction) => {
-        if (interaction.author.bot || interaction.channel.type != ChannelType.DM) {
+    client.on(Events.MessageCreate, AutoResponseListener.onEvent)
+
+    client.on(Events.MessageCreate, async (interaction) => {
+        if (
+            interaction.author.bot ||
+            interaction.channel.type != ChannelType.DM ||
+            interaction.author.id === joshId
+        ) {
             return
         }
-        const josh = await client.users.fetch('155046312411267072')
+        const josh = await client.users.fetch(joshId)
         const joshDMs = await josh.createDM()
         const embed = new EmbedBuilder()
             .setColor('Random')
