@@ -1,20 +1,22 @@
-import { CacheType, CommandInteraction } from 'discord.js'
+import { CacheType, CommandInteraction, TextChannel } from 'discord.js'
 import { ICommand } from './ICommand'
 
 const allowedUsers = ['155046312411267072', '275342581821603842']
 
-export default class SendCommand implements ICommand {
+export default class SendChannelCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
         if (!allowedUsers.includes(interaction.member?.user.id ?? 'null')) {
             await interaction.reply({ content: 'des deafst du ned du santla', ephemeral: true })
             return
         }
-        const target = interaction.options.getUser('user')
+        const target = interaction.options.get('channel')
         const message = interaction.options.get('message')?.value
         if (target && message) {
             try {
-                const userDM = await target.createDM()
-                userDM.send(message as string)
+                const channel = interaction.guild?.channels.cache.find(c => c.id === target.value)
+                if (!channel) throw {}
+                if (!(channel instanceof TextChannel)) throw {}
+                await (channel as TextChannel).send(message as string)
                 await interaction.reply({ content: 'ok', ephemeral: true })
             } catch (_) {
                 await interaction.reply({ content: 'gehd ned', ephemeral: true })

@@ -1,5 +1,5 @@
-import { ICommand } from './commands/ICommand'
 import * as Commands from './commands'
+import { ICommand } from './commands/ICommand'
 
 interface CommandEntry {
     name: string
@@ -32,12 +32,12 @@ const commands: CommandEntry[] = [
         command: new Commands.NoProductiveCommand(),
     },
     {
-        name: 'chuen',
-        command: new Commands.ChuenCommand(),
-    },
-    {
         name: 'send',
         command: new Commands.SendCommand(),
+    },
+    {
+        name: 'sendchannel',
+        command: new Commands.SendChannelCommand(),
     },
 ]
 

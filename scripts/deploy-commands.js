@@ -4,7 +4,7 @@
     Simply add a SlashCommandBuilder to the `commands` array while using the desired building functions.
 
     For more information, see
-    https://discordjs.guide/popular-topics/builders.html#slash-command-builders
+    https://discordjs.guide/creating-your-bot/command-deployment.html#command-registration
 */
 
 const { SlashCommandBuilder } = require('@discordjs/builders')
@@ -31,11 +31,15 @@ const commands = [
     new SlashCommandBuilder()
         .setName('noproductive')
         .setDescription('Moves everyone from the productive zone to general'),
-    new SlashCommandBuilder().setName('chuen').setDescription('Who wants to chill?'),
     new SlashCommandBuilder()
         .setName('send')
-        .setDescription('Sends a message')
-        .addStringOption((option) => option.setName('id').setDescription('The target user id').setRequired(true))
+        .setDescription('Sends a message to a user')
+        .addUserOption((option) => option.setName('user').setDescription('The target user').setRequired(true))
+        .addStringOption((option) => option.setName('message').setDescription('The message to send').setRequired(true)),
+     new SlashCommandBuilder()
+        .setName('sendchannel')
+        .setDescription('Sends a message to a channel')
+        .addChannelOption((option) => option.setName('channel').setDescription('The target channel').setRequired(true))
         .addStringOption((option) => option.setName('message').setDescription('The message to send').setRequired(true)),
 ].map((command) => command.toJSON())
 
