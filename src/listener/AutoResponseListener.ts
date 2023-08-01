@@ -17,7 +17,15 @@ const autoResponses: AutoResponse[] = [
     {
         regex: /figg di/i,
         response: 'figg di selber',
-    }
+    },
+    {
+        regex: /good one/i,
+        response: 'XDDDDDDD',
+    },
+    {
+        regex: /i mog nimma/i,
+        response: 'i a ned',
+    },
 ]
 
 const onEvent = (event: Message<boolean>) => {
