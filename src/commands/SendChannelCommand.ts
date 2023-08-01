@@ -9,14 +9,13 @@ export default class SendChannelCommand implements ICommand {
             await interaction.reply({ content: 'des deafst du ned du santla', ephemeral: true })
             return
         }
-        const target = interaction.options.get('channel')
+        const target = interaction.options.get('channel')?.channel
         const message = interaction.options.get('message')?.value
         if (target && message) {
             try {
-                const channel = interaction.guild?.channels.cache.find(c => c.id === target.value)
-                if (!channel) throw {}
-                if (!(channel instanceof TextChannel)) throw {}
-                await (channel as TextChannel).send(message as string)
+                if (!target) throw {}
+                if (!(target instanceof TextChannel)) throw {}
+                await (target as TextChannel).send(message as string)
                 await interaction.reply({ content: 'ok', ephemeral: true })
             } catch (_) {
                 await interaction.reply({ content: 'gehd ned', ephemeral: true })
