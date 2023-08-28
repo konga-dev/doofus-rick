@@ -1,9 +1,8 @@
 import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
-
-import * as AutoResponseListener from './listener/AutoResponseListener'
 import CommandRegistry from './CommandRegistry'
+import { AutoResponseListener, NameListener } from './listener'
 import Database from './Database'
 import { TaskScheduler } from './TaskScheduler'
 
@@ -49,6 +48,8 @@ async function main(args: string[]) {
     })
 
     client.on(Events.MessageCreate, AutoResponseListener.onEvent)
+
+    client.on(Events.GuildMemberUpdate, NameListener.onEvent)
 
     client.on(Events.MessageCreate, async (interaction) => {
         if (

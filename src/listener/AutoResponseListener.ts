@@ -1,4 +1,4 @@
-import { ChannelType, Message } from 'discord.js'
+import { Message } from 'discord.js'
 
 interface AutoResponse {
     regex: RegExp
@@ -28,7 +28,7 @@ const autoResponses: AutoResponse[] = [
     },
 ]
 
-const onEvent = (event: Message<boolean>) => {
+const onEvent = async (event: Message<boolean>) => {
     const { content, channel } = event
     if (event.author.bot) return
     autoResponses.forEach((autoResponse) => {
