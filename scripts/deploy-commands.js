@@ -30,13 +30,19 @@ const commands = [
         .addUserOption((option) => option.setName('user').setDescription('The user to be kicked').setRequired(true)),
     new SlashCommandBuilder()
         .setName('noproductive')
+        .addIntegerOption((option) =>
+            option
+                .setName('index')
+                .setDescription('The index of the channel to move into (starts at 0)')
+                .setRequired(false),
+        )
         .setDescription('Moves everyone from the productive zone to general'),
     new SlashCommandBuilder()
         .setName('send')
         .setDescription('Sends a message to a user')
         .addUserOption((option) => option.setName('user').setDescription('The target user').setRequired(true))
         .addStringOption((option) => option.setName('message').setDescription('The message to send').setRequired(true)),
-     new SlashCommandBuilder()
+    new SlashCommandBuilder()
         .setName('sendchannel')
         .setDescription('Sends a message to a channel')
         .addChannelOption((option) => option.setName('channel').setDescription('The target channel').setRequired(true))

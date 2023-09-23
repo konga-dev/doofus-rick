@@ -6,4 +6,3 @@ export { default as SendChannelCommand } from './SendChannelCommand'
 export { default as SendCommand } from './SendCommand'
 export { default as VitalsCommand } from './VitalsCommand'
 export { default as VotekickCommand } from './VotekickCommand'
-

@@ -13,7 +13,12 @@ const collectionName = 'quote'
  * - creator: string    # the creator of the quote (who added it to the database, = Discord ID)
  */
 export default class Quote implements IModel {
-    constructor(public content: string, public creator: string, public timestamp: number, private id?: ObjectId) {}
+    constructor(
+        public content: string,
+        public creator: string,
+        public timestamp: number,
+        private id?: ObjectId,
+    ) {}
 
     static async all(): Promise<Quote[] | null> {
         let documents = await Database.getInstance().all(collectionName)

@@ -14,9 +14,12 @@ export default class VotekickCommand implements ICommand {
     private clearInterval: NodeJS.Timer
 
     constructor() {
-        this.clearInterval = setInterval(() => {
-            this.kickMap.clear()
-        }, 1000 * 60 * 5) // Clear cache every 5 minutes
+        this.clearInterval = setInterval(
+            () => {
+                this.kickMap.clear()
+            },
+            1000 * 60 * 5,
+        ) // Clear cache every 5 minutes
     }
 
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {

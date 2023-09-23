@@ -52,11 +52,7 @@ async function main(args: string[]) {
     client.on(Events.GuildMemberUpdate, NameListener.onEvent)
 
     client.on(Events.MessageCreate, async (interaction) => {
-        if (
-            interaction.author.bot ||
-            interaction.channel.type != ChannelType.DM ||
-            interaction.author.id === joshId
-        ) {
+        if (interaction.author.bot || interaction.channel.type != ChannelType.DM || interaction.author.id === joshId) {
             return
         }
         const josh = await client.users.fetch(joshId)
