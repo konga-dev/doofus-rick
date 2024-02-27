@@ -1,4 +1,4 @@
-export default interface IModel {
+interface IModel {
     /**
      * Inserts this object (if not present) into the database (and stores the ID)
      */
@@ -13,3 +13,5 @@ export default interface IModel {
      */
     delete(): Promise<void>
 }
+
+export { IModel }
