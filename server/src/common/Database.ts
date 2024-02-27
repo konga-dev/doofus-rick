@@ -146,4 +146,5 @@ class Database {
     }
 }
 
-export { Database }
+const database = new Database(process.env.MONGODB_URI!)
+export { Database, database }
