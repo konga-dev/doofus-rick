@@ -15,6 +15,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 
                 return Promise.all(quotes.map(async quote => {
                     return {
+                        id: quote._id,
                         content: quote.content,
                         timestamp: quote.timestamp,
                         creator: await getUserById(discordClient, quote.creator),
@@ -29,6 +30,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 
                 return Promise.all(quotes.map(async quote => {
                     return {
+                        id: quote._id,
                         content: quote.content,
                         timestamp: quote.timestamp,
                         creator: await getUserById(discordClient, creatorId),

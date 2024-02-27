@@ -11,7 +11,7 @@ import { IModel } from './IModel'
  */
 class Quote implements IModel {
     constructor(
-        public readonly id: ObjectId,
+        public readonly _id: ObjectId,
         public content: string,
         public creator: string,
         public timestamp: number,
