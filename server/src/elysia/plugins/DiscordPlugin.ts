@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia'
 import { getUserById } from '../../discord/Client'
 import { discordClientDecorator } from '../Setup'
 
-const discordPlugin = new Elysia()
+const discordPlugin = new Elysia({ name: 'Discord' })
     .use(discordClientDecorator)
     .group('/discord', (app) =>
         app
