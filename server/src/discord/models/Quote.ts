@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import Database from '../Database'
+import { Database } from '../../common/Database'
 import IModel from './IModel'
 
 const collectionName = 'quote'

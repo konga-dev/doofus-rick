@@ -1,15 +1,15 @@
 import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials } from 'discord.js'
 import dotenv from 'dotenv'
 import log4js from 'log4js'
-import CommandRegistry from './CommandRegistry'
-import { AutoResponseListener, NameListener } from './listener'
-import Database from './Database'
-import { TaskScheduler } from './TaskScheduler'
+import { Database } from './common/Database'
+import CommandRegistry from './discord/CommandRegistry'
+import { AutoResponseListener, NameListener } from './discord/listener'
+import { TaskScheduler } from './discord/TaskScheduler'
 
 const joshId = '155046312411267072'
 
 async function main(args: string[]) {
-    dotenv.config()
+    dotenv.config({ path: '../.env' })
     new Database(process.env.MONGODB_URI!)
 
     log4js.configure({
@@ -73,7 +73,7 @@ async function main(args: string[]) {
 
     await Database.getInstance().connect(process.env.DATABASE!)
 
-    client.login(process.env.DISCORD_TOKEN)
+    await client.login(process.env.DISCORD_TOKEN)
 }
 
 main(process.argv.slice(2))

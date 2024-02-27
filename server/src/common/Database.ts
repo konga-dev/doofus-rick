@@ -1,7 +1,7 @@
 import log4js from 'log4js'
 import { Db, Document, MongoClient, ObjectId, WithId } from 'mongodb'
 
-export default class Database {
+class Database {
     private static instance: Database
     private client: MongoClient
     private database!: Db
@@ -145,3 +145,5 @@ export default class Database {
         return (await this.database.collection(collectionName).deleteMany(filter)).deletedCount
     }
 }
+
+export { Database }
