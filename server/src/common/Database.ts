@@ -1,5 +1,15 @@
 import log4js from 'log4js'
-import { Db, Document, MongoClient, ObjectId, WithId } from 'mongodb'
+import {
+    Db,
+    DeleteResult,
+    Filter,
+    MongoClient,
+    ObjectId,
+    OptionalUnlessRequiredId,
+    UpdateFilter,
+    UpdateResult,
+} from 'mongodb'
+import { IModel } from './IModel'
 
 class Database {
     private static instance: Database
@@ -61,11 +71,11 @@ class Database {
      * @param collectionName name of the collection
      * @returns Promise<WithId<Document>[]>
      */
-    public async all(collectionName: string): Promise<WithId<Document>[]> {
+    public async all<T extends IModel>(collectionName: string): Promise<Array<T>> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection(collectionName).find({}).toArray()
+        return await this.database.collection<T>(collectionName).find<T>({}).toArray()
     }
 
     /**
@@ -75,11 +85,11 @@ class Database {
      * @param filter filter, used to seleect the documents to get
      * @returns Promise<WithId<Document>[]>
      */
-    public async get(collectionName: string, filter: {}): Promise<WithId<Document>[]> {
+    public async get<T extends IModel>(collectionName: string, filter: Filter<T>): Promise<Array<T>> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection(collectionName).find(filter).toArray()
+        return await this.database.collection<T>(collectionName).find<T>(filter).toArray()
     }
 
     /**
@@ -88,13 +98,13 @@ class Database {
      * @param collectionName name of the collection
      * @returns Promise<Document | null>
      */
-    public async getRandom(collectionName: string): Promise<Document | null> {
+    public async getRandom<T extends IModel>(collectionName: string): Promise<T | null> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
         return await this.database
-            .collection(collectionName)
-            .aggregate([{ $sample: { size: 1 } }])
+            .collection<T>(collectionName)
+            .aggregate<T>([{ $sample: { size: 1 } }])
             .next()
     }
 
@@ -105,13 +115,11 @@ class Database {
      * @param document the document to be inserted
      * @returns Promise<ObjectId>
      */
-    public async insert(collectionName: string, document: {}): Promise<ObjectId> {
+    public async insert<T extends IModel>(collectionName: string, document: T): Promise<ObjectId> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await (
-            await this.database.collection(collectionName).insertOne(document)
-        ).insertedId
+        return (await this.database.collection<T>(collectionName).insertOne(document as OptionalUnlessRequiredId<T>)).insertedId
     }
 
     /**
@@ -123,11 +131,11 @@ class Database {
      * @param update operations to be applied to the documents
      * @returns Promise<number> modified count
      */
-    public async update(collectionName: string, filter: {}, update: {}): Promise<number> {
+    public async update<T extends IModel>(collectionName: string, filter: Filter<T>, update: UpdateFilter<T>): Promise<UpdateResult> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return (await this.database.collection(collectionName).updateMany(filter, update)).modifiedCount
+        return await this.database.collection<T>(collectionName).updateMany(filter, update)
     }
 
     /**
@@ -138,11 +146,11 @@ class Database {
      * @param filter filter, used to select the documents to delete
      * @returns Promise<Number> deleted count
      */
-    public async delete(collectionName: string, filter: {}): Promise<number> {
+    public async delete<T extends IModel>(collectionName: string, filter: Filter<T>): Promise<DeleteResult> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return (await this.database.collection(collectionName).deleteMany(filter)).deletedCount
+        return await this.database.collection<T>(collectionName).deleteMany(filter)
     }
 }
 
