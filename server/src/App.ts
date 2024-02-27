@@ -13,7 +13,7 @@ async function main(args: string[]) {
         },
     })
 
-    await database.connect(process.env.DATABASE!)
+    await database.connect(process.env.MONGODB_INITDB_DATABASE)
     await client.login(process.env.DISCORD_TOKEN)
 
     server.listen(3000)
