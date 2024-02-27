@@ -14,7 +14,9 @@ class Quote implements IModel {
         public readonly id: ObjectId,
         public content: string,
         public creator: string,
-        public timestamp: number
+        public timestamp: number,
+        public participants: Array<string> = [],
+        public votes: number = 0
     ) {}
 }
 

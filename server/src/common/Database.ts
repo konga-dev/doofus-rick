@@ -2,9 +2,8 @@ import log4js from 'log4js'
 import {
     Db,
     DeleteResult,
-    Filter,
+    Filter, InsertOneResult,
     MongoClient,
-    ObjectId,
     OptionalUnlessRequiredId,
     UpdateFilter,
     UpdateResult,
@@ -75,7 +74,7 @@ class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection<T>(collectionName).find<T>({}).toArray()
+        return this.database.collection<T>(collectionName).find<T>({}).toArray()
     }
 
     /**
@@ -89,7 +88,7 @@ class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection<T>(collectionName).find<T>(filter).toArray()
+        return this.database.collection<T>(collectionName).find<T>(filter).toArray()
     }
 
     /**
@@ -102,7 +101,7 @@ class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database
+        return this.database
             .collection<T>(collectionName)
             .aggregate<T>([{ $sample: { size: 1 } }])
             .next()
@@ -115,11 +114,11 @@ class Database {
      * @param document the document to be inserted
      * @returns Promise<ObjectId>
      */
-    public async insert<T extends IModel>(collectionName: string, document: T): Promise<ObjectId> {
+    public async insert<T extends IModel>(collectionName: string, document: T): Promise<InsertOneResult> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return (await this.database.collection<T>(collectionName).insertOne(document as OptionalUnlessRequiredId<T>)).insertedId
+        return this.database.collection<T>(collectionName).insertOne(document as OptionalUnlessRequiredId<T>)
     }
 
     /**
@@ -135,7 +134,7 @@ class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection<T>(collectionName).updateMany(filter, update)
+        return this.database.collection<T>(collectionName).updateMany(filter, update)
     }
 
     /**
@@ -150,7 +149,7 @@ class Database {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
-        return await this.database.collection<T>(collectionName).deleteMany(filter)
+        return this.database.collection<T>(collectionName).deleteMany(filter)
     }
 }
 
