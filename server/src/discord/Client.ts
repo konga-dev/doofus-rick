@@ -1,10 +1,11 @@
-import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials } from 'discord.js'
+import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials, Snowflake } from 'discord.js'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'
 import { TaskScheduler } from './TaskScheduler'
 import { AutoResponseListener, NameListener } from './listener'
 
-const joshId = '155046312411267072'
+const joshId: Snowflake = '155046312411267072'
+const qqtGuild: Snowflake = '691751152034906142'
 
 const client = new Client({
     intents: [
@@ -55,4 +56,20 @@ client.on(Events.MessageCreate, async (interaction) => {
     joshDMs.send({ embeds: [embed] })
 })
 
-export { client }
+const getUserById = async (client: Client, id: string): Promise<{ name: string, avatar: string } | null> => {
+    const guild = await client.guilds.fetch({ guild: qqtGuild })
+    const user = guild.members.cache
+                      .map(member => member)
+                      .find(member => member.id === id)
+
+    if (!user) {
+        return null
+    }
+
+    return {
+        name: user.nickname ?? user.displayName,
+        avatar: user.displayAvatarURL()
+    }
+}
+
+export { client, getUserById }
