@@ -1,6 +1,6 @@
 import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { ICommand } from './ICommand'
-import Quote from '../models/Quote'
+import { Quote } from '../../common/Quote'
 
 export default class QuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
-import { Database } from '../../common/Database'
-import IModel from './IModel'
+import { Database } from './Database'
+import { IModel } from './IModel'
 
 const collectionName = 'quote'
 
@@ -12,7 +12,7 @@ const collectionName = 'quote'
  * - content: string    # the actual content of this quote
  * - creator: string    # the creator of the quote (who added it to the database, = Discord ID)
  */
-export default class Quote implements IModel {
+class Quote implements IModel {
     constructor(
         public content: string,
         public creator: string,
@@ -57,3 +57,5 @@ export default class Quote implements IModel {
         throw new Error('Method not implemented.')
     }
 }
+
+export { Quote }

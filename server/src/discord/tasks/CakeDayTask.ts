@@ -1,7 +1,6 @@
 import { EmbedBuilder, TextChannel } from 'discord.js'
-
+import { Quote } from '../../common/Quote'
 import { ITextChannelTask } from './ITextChannelTask'
-import Quote from '../models/Quote'
 
 export default class CakeDayTask implements ITextChannelTask {
     private channel: TextChannel
