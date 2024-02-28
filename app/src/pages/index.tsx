@@ -1,30 +1,29 @@
 import { Quote } from "@/components/quote";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { edenFetch, edenTreaty } from "@elysiajs/eden";
+import { edenFetch } from "@elysiajs/eden";
 import { ChangeEvent, useEffect, useState } from "react";
 import type { Server } from "../../../server/src/elysia/Server";
 
 const SKELETON_COUNT = 3;
 
-const fetch = edenFetch<Server>("https://localhost:3000");
-
-// type X = typeof (app.quote[0].get())
+const fetch = edenFetch<Server>("http://localhost:3000");
 
 function RootIndex() {
   const [loading, setLoading] = useState(false);
-  const [quotes, setQuotes] = useState<any>([]);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [search, setSearch] = useState<string>("");
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    console.log(value);
+    setSearch(value);
   };
 
   useEffect(() => {
     setLoading(true);
     fetch("/quote/", {}).then((response) => {
       setLoading(false);
-      setQuotes(response.data);
+      if (response.data) setQuotes(response.data);
     });
   }, []);
 
@@ -36,17 +35,18 @@ function RootIndex() {
           ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
               <Skeleton
                 key={index}
-                className="w-full h-36 rounded-xl bg-zinc-600"
+                className="w-full h-48 rounded-xl bg-zinc-900"
               />
             ))
-          : quotes.map((quote: any) => (
-              <Quote
-                quote={quote.content}
-                creator={quote.creator}
-                users={quote.participants}
-                timestamp={new Date(quote.timestamp)}
-              />
-            ))}
+          : quotes
+              .filter(
+                (quote) =>
+                  search.length == 0 ||
+                  quote.content
+                    .toLocaleLowerCase()
+                    .includes(search.toLocaleLowerCase())
+              )
+              .map((quote) => <Quote key={quote._id} quote={quote} />)}
       </section>
     </>
   );

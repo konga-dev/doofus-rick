@@ -49,7 +49,7 @@ class Database {
     public async connect(databaseName: string): Promise<void> {
         if (databaseName === undefined) {
             throw new Error(`ERROR: No database name specified!\n
-                Please check your 'DATABASE' variable in the respective .env file.`)
+                Please check your 'MONGODB_INITDB_DATABASE' variable in the respective .env file.`)
         }
 
         try {

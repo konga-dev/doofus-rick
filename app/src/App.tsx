@@ -16,7 +16,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="bg-zinc-800 max-w-screen min-h-screen text-gray-100 flex justify-center py-24">
+    <div className="bg-zinc-950 text-gray-200 max-w-screen min-h-screen flex justify-center py-24">
       <main className="flex space-y-8 flex-col w-[700px]">
         <header className="flex flex-row space-x-4 items-center">
           <img
