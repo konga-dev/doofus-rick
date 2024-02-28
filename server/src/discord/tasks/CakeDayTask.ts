@@ -35,7 +35,7 @@ export default class CakeDayTask implements ITextChannelTask {
     }
 
     async getCakeQuotes(): Promise<[Quote, number][] | null> {
-        let quotes = (await Database.getInstance().all('quote')) as Quote[]
+        let quotes = await Database.getInstance().all<Quote>('quote')
         if (!quotes) {
             return null
         }

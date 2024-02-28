@@ -5,9 +5,9 @@ import { Quote } from '../../common/Quote'
 
 export default class RandomQuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-        const quote = (await Database.getInstance().getRandom('quote')) as Quote
+        const quote = await Database.getInstance().getRandom<Quote>('quote')
         if (!quote) {
-            interaction.reply({ content: 'Could not fetch quote' })
+            await interaction.reply({ content: 'Could not fetch quote' })
             return
         }
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === quote.creator)
@@ -19,6 +19,6 @@ export default class RandomQuoteCommand implements ICommand {
                 iconURL: quoteCreator?.displayAvatarURL() ?? undefined,
             })
             .setTimestamp(quote.timestamp)
-        interaction.reply({ embeds: [quoteEmbed] })
+        await interaction.reply({ embeds: [quoteEmbed] })
     }
 }

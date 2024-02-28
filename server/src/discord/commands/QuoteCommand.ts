@@ -13,7 +13,7 @@ export default class QuoteCommand implements ICommand {
         let stringQuote = (quote.value as string).replaceAll('\\n', '\n')
         const quoteObject = new Quote(null, stringQuote, interaction.user.id, Date.now(), [], 0)
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
-        Database.getInstance().insert('quote', quoteObject) // this usually never takes more than 3 seconds, so we don't need to defer
+        await Database.getInstance().insert<Quote>('quote', quoteObject) // this usually never takes more than 3 seconds, so we don't need to defer
         const quoteEmbed = new EmbedBuilder()
             .setColor('Random')
             .setDescription(quoteObject.content)
@@ -22,6 +22,7 @@ export default class QuoteCommand implements ICommand {
                 iconURL: quoteCreator?.displayAvatarURL() ?? undefined,
             })
             .setTimestamp(quoteObject.timestamp)
-        interaction.reply({ embeds: [quoteEmbed] })
+
+        await interaction.reply({ embeds: [quoteEmbed] })
     }
 }
