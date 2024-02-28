@@ -5,17 +5,17 @@ WORKDIR /home/app
 # This will chache required dependencies and thus speed up future builds.
 FROM base AS install
 RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
+COPY server/package.json server/bun.lockb /temp/dev/
 RUN cd /temp/dev && bun install --frozen-lockfile
 
 # Install with --production flag to exclude development dependencies.
 RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
+COPY server/package.json server/bun.lockb /temp/prod/
 RUN cd /temp/prod && bun install --frozen-lockfile --production
 
 # Copy node_modules from temporary directory and all other non-ignored project files into the image.
 FROM base AS pre-release
-COPY . .
+COPY server .
 
 # Build
 ENV NODE_ENV=production
