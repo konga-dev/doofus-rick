@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia'
+import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 import { serverTiming } from '@elysiajs/server-timing'
 import { quotePlugin, discordPlugin } from './plugins'
@@ -9,6 +10,7 @@ const server = new Elysia()
     .state('version', 1)
     .decorate('database', database)
     .use(swagger())
+    .use(cors())
     .use(serverTiming())
     .get('/', ({ store: { name, version }}) => ({ name, version }))
     .use(quotePlugin)
