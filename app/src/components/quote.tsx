@@ -11,7 +11,7 @@ function Quote({ quote }: QuoteProps) {
       <CardContent>
         <div className="flex space-x-4 items-center pt-8 px-8">
           <span className="font-serif text-8xl text-zinc-300">”</span>
-          <p className="italic text-lg">{quote.content}</p>
+          <p className="italic text-lg whitespace-pre-line">{quote.content}</p>
         </div>
       </CardContent>
       <CardFooter>
