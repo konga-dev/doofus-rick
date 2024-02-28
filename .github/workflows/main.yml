@@ -11,14 +11,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout 🛎️
+      - name: checkout
         uses: actions/checkout@v3
       - name: Install and Build 🔧
         run: |
           cd app
-          npm ci
+          npm i
           npm run build
-      - name: Deploy 🚀
+      - name: deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build
