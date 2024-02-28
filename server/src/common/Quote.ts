@@ -11,12 +11,12 @@ import { IModel } from './IModel'
  */
 class Quote implements IModel {
     constructor(
-        public readonly _id: ObjectId,
+        public readonly _id: ObjectId | null,
         public content: string,
         public creator: string,
         public timestamp: number,
         public participants: Array<string> = [],
-        public votes: number = 0
+        public votes: number = 0,
     ) {}
 }
 

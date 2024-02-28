@@ -7,7 +7,9 @@ import type { Server } from '../../../server/src/elysia/Server'
 
 const SKELETON_COUNT = 3
 
-const fetch = edenFetch<Server>('http://localhost:3000')
+const fetch = edenFetch<Server>(
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://doofus-rick.josholaus.com',
+)
 
 function RootIndex() {
     const [loading, setLoading] = useState(false)

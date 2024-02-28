@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 interface IModel {
-    _id: ObjectId
+    _id: ObjectId | null
 }
 
-export { IModel }
+export type { IModel }

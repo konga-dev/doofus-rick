@@ -4,4 +4,4 @@ interface ICommand {
     execute(interaction: CommandInteraction): void
 }
 
-export { ICommand }
+export type { ICommand }

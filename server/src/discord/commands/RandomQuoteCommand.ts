@@ -1,10 +1,11 @@
 import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { ICommand } from './ICommand'
+import { Database } from '../../common/Database'
 import { Quote } from '../../common/Quote'
 
 export default class RandomQuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-        const quote = await Quote.getRandom()
+        const quote = (await Database.getInstance().getRandom('quote')) as Quote
         if (!quote) {
             interaction.reply({ content: 'Could not fetch quote' })
             return

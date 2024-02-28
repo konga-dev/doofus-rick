@@ -1,6 +1,7 @@
 import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { ICommand } from './ICommand'
 import { Quote } from '../../common/Quote'
+import { Database } from '../../common/Database'
 
 export default class QuoteCommand implements ICommand {
     async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
@@ -10,9 +11,9 @@ export default class QuoteCommand implements ICommand {
             return
         }
         let stringQuote = (quote.value as string).replaceAll('\\n', '\n')
-        const quoteObject = new Quote(stringQuote, interaction.user.id, Date.now())
+        const quoteObject = new Quote(null, stringQuote, interaction.user.id, Date.now(), [], 0)
         const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
-        await quoteObject.create() // this usually never takes more than 3 seconds, so we don't need to defer
+        Database.getInstance().insert('quote', quoteObject) // this usually never takes more than 3 seconds, so we don't need to defer
         const quoteEmbed = new EmbedBuilder()
             .setColor('Random')
             .setDescription(quoteObject.content)

@@ -2,7 +2,8 @@ import log4js from 'log4js'
 import {
     Db,
     DeleteResult,
-    Filter, InsertOneResult,
+    Filter,
+    InsertOneResult,
     MongoClient,
     OptionalUnlessRequiredId,
     UpdateFilter,
@@ -37,6 +38,9 @@ class Database {
     }
 
     public static getInstance(): Database {
+        if (!Database.instance) {
+            Database.instance = new Database(process.env.MONGODB_URI ?? '')
+        }
         return Database.instance
     }
 
@@ -130,7 +134,11 @@ class Database {
      * @param update operations to be applied to the documents
      * @returns Promise<number> modified count
      */
-    public async update<T extends IModel>(collectionName: string, filter: Filter<T>, update: UpdateFilter<T>): Promise<UpdateResult> {
+    public async update<T extends IModel>(
+        collectionName: string,
+        filter: Filter<T>,
+        update: UpdateFilter<T>,
+    ): Promise<UpdateResult> {
         if (!(await this.database.listCollections({ name: collectionName }).next())) {
             throw new Error(`ERROR: Specified collection '${collectionName}' does not exist!`)
         }
@@ -153,5 +161,4 @@ class Database {
     }
 }
 
-const database = new Database(process.env.MONGODB_URI)
-export { Database, database }
+export { Database }

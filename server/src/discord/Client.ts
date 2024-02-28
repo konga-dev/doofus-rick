@@ -56,11 +56,9 @@ client.on(Events.MessageCreate, async (interaction) => {
     joshDMs.send({ embeds: [embed] })
 })
 
-const getUserById = async (client: Client, id: string): Promise<{ name: string, avatar: string } | null> => {
+const getUserById = async (client: Client, id: string): Promise<{ name: string; avatar: string } | null> => {
     const guild = await client.guilds.fetch({ guild: qqtGuild })
-    const user = guild.members.cache
-                      .map(member => member)
-                      .find(member => member.id === id)
+    const user = guild.members.cache.map((member) => member).find((member) => member.id === id)
 
     if (!user) {
         return null
@@ -68,7 +66,7 @@ const getUserById = async (client: Client, id: string): Promise<{ name: string, 
 
     return {
         name: user.nickname ?? user.displayName,
-        avatar: user.displayAvatarURL()
+        avatar: user.displayAvatarURL(),
     }
 }
 

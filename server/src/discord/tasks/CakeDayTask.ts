@@ -1,6 +1,7 @@
 import { EmbedBuilder, TextChannel } from 'discord.js'
 import { Quote } from '../../common/Quote'
 import { ITextChannelTask } from './ITextChannelTask'
+import { Database } from '../../common/Database'
 
 export default class CakeDayTask implements ITextChannelTask {
     private channel: TextChannel
@@ -34,7 +35,7 @@ export default class CakeDayTask implements ITextChannelTask {
     }
 
     async getCakeQuotes(): Promise<[Quote, number][] | null> {
-        let quotes = await Quote.all()
+        let quotes = (await Database.getInstance().all('quote')) as Quote[]
         if (!quotes) {
             return null
         }

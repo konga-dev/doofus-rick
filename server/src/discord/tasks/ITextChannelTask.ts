@@ -6,4 +6,4 @@ interface ITextChannelTask extends ITask {
     execute(channel: TextChannel): Promise<void>
 }
 
-export { ITextChannelTask }
+export type { ITextChannelTask }
