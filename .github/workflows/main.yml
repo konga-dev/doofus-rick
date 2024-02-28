@@ -24,20 +24,22 @@ jobs:
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: app/dist
   build-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: bun
+        uses: oven-sh/setup-bun@v1
       - name: docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
-      - name: npm install
+      - name: bun install
         run: |
-          pushd server && npm install && popd
+          pushd server && bun i && popd
       - name: docker build
         run: |
           docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
