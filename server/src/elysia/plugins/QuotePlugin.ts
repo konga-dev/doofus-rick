@@ -20,6 +20,21 @@ const quotePlugin = new Elysia({ name: 'Quote' })
                             content: quote.content,
                             timestamp: quote.timestamp,
                             creator: await getUserById(discordClient, quote.creator),
+                            participants: await Promise.all(quote.participants.map(async (participant) => await getUserById(discordClient, participant))),
+                            votes: quote.votes,
+                        }
+                    }),
+                )
+            })
+            .get('/:creatorId', async ({ database, discordClient, params: { creatorId } }) => {
+                    const quotes = await database.get<Quote>('quote', { creator: creatorId })
+
+                    return Promise.all(quotes.map(async (quote) => {
+                        return {
+                            _id: quote._id,
+                            content: quote.content,
+                            timestamp: quote.timestamp,
+                            creator: await getUserById(discordClient, creatorId),
                             participants: await Promise.all(
                                 quote.participants.map(
                                     async (participant) => await getUserById(discordClient, participant),
@@ -27,30 +42,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
                             ),
                             votes: quote.votes,
                         }
-                    }),
-                )
-            })
-            .get(
-                '/:creatorId',
-                async ({ database, discordClient, params: { creatorId } }) => {
-                    const quotes = await database.get<Quote>('quote', { creator: creatorId })
-
-                    return Promise.all(
-                        quotes.map(async (quote) => {
-                            return {
-                                _id: quote._id,
-                                content: quote.content,
-                                timestamp: quote.timestamp,
-                                creator: await getUserById(discordClient, creatorId),
-                                participants: await Promise.all(
-                                    quote.participants.map(
-                                        async (participant) => await getUserById(discordClient, participant),
-                                    ),
-                                ),
-                                votes: quote.votes,
-                            }
-                        }),
-                    )
+                    }))
                 },
                 {
                     params: t.Object({
