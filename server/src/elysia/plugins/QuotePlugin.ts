@@ -10,7 +10,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
     .decorate('logger', log4js.getLogger('QuotePlugin'))
     .group('/quote', (app) =>
         app
-            .get('/', async ({ database, discordClient }) => {
+            .get('', async ({ database, discordClient }) => {
                 const quotes = await database.all<Quote>('quote')
 
                 return Promise.all(

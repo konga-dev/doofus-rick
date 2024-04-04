@@ -1,57 +1,52 @@
 {
-  "name": "doofus-rick-web",
-  "private": true,
-  "version": "1.0.0",
-  "description": "An amazingly useful Discord Bot for desperate CS students",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "format": "prettier --write ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/josholaus/doofus-rick.git"
-  },
-  "contributors": [
-    "Joshua Winkler <josh@bemoty.dev>",
-    "Nicolaus Rossi <n.rossi2002@gmail.com>"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/josholaus/doofus-rick/issues"
-  },
-  "homepage": "https://github.com/josholaus/doofus-rick#readme",
-  "dependencies": {
-    "@elysiajs/eden": "^0.8.1",
-    "@radix-ui/react-slot": "^1.0.2",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
-    "lucide-react": "^0.341.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.1",
-    "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.20",
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.17",
-    "elysia": "^0.8.17",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.35",
-    "prettier": "^3.2.5",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.4"
-  }
+    "name": "doofus-rick-web",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/josholaus/doofus-rick.git"
+    },
+    "devDependencies": {
+        "@elysiajs/eden": "^1.0.11",
+        "@sveltejs/adapter-auto": "^3.0.0",
+        "@sveltejs/adapter-static": "^3.0.1",
+        "@sveltejs/kit": "^2.0.0",
+        "@sveltejs/vite-plugin-svelte": "^3.0.0",
+        "@types/eslint": "^8.56.0",
+        "@typescript-eslint/eslint-plugin": "^7.0.0",
+        "@typescript-eslint/parser": "^7.0.0",
+        "autoprefixer": "^10.4.19",
+        "elysia": "^1.0.11",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-svelte": "^2.35.1",
+        "postcss": "^8.4.38",
+        "prettier": "^3.1.1",
+        "prettier-plugin-svelte": "^3.1.2",
+        "prettier-plugin-tailwindcss": "^0.5.13",
+        "svelte": "^4.2.7",
+        "tailwindcss": "^3.4.3",
+        "tslib": "^2.4.1",
+        "vite": "^5.0.3"
+    },
+    "bugs": {
+        "url": "https://github.com/josholaus/doofus-rick/issues"
+    },
+    "contributors": [
+        "Joshua Winkler <josh@bemoty.dev>",
+        "Nicolaus Rossi <n.rossi2002@gmail.com>"
+    ],
+    "description": "An amazingly useful Discord Bot for desperate CS students",
+    "homepage": "https://github.com/josholaus/doofus-rick#readme",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "lint": "prettier --check . && eslint .",
+        "format": "prettier --write ."
+    },
+    "type": "module"
 }
