@@ -12,7 +12,7 @@
     })
 </script>
 
-<TextInput placeholder="Search..." bind:value={searchValue} />
+<TextInput placeholder="Suche ..." bind:value={searchValue} />
 
 <section class="flex flex-col space-y-4">
     {#if filteredQuotes.length === 0}

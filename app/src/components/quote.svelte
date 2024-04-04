@@ -1,6 +1,7 @@
 <script lang="ts">
-    import Card from './ui/card.svelte'
     import type { PageData } from '../routes/$types'
+    import Card from './ui/card.svelte'
+    import ExternalIcon from './icons/external-icon.svelte'
     type Quote = PageData['quotes'][0]
 
     export let quote: Quote
@@ -25,5 +26,10 @@
                 day: 'numeric',
             })}
         </span>
+        <a
+            href="/quote/{quote._id?.toString()}"
+            class="hover:text-neutral-300"
+            title="Direktlink besuchen"
+            target="_blank"><ExternalIcon /></a>
     </div>
 </Card>
