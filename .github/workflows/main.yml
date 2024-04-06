@@ -23,7 +23,7 @@ jobs:
           cd app && bun i
       - name: docker build
         run: |
-          docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
+          cd app && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
       - name: docker push
         run: |
           docker push docker.pkg.github.com/josholaus/doofus-rick/web:latest
@@ -44,7 +44,7 @@ jobs:
           cd server && bun i
       - name: docker build
         run: |
-          docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
+          cd server && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
       - name: docker push
         run: |
           docker push docker.pkg.github.com/josholaus/doofus-rick/bot:latest
