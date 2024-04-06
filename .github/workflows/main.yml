@@ -6,25 +6,27 @@ on:
 
 jobs:
   build-frontend:
-    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: bun
         uses: oven-sh/setup-bun@v1
-      - name: Install and Build 🔧
+      - name: docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
-          pushd server && bun i && popd
-          cd app
-          bun i
-          bun run build
-      - name: deploy
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: app/dist
+          docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
+      - name: bun install
+        run: |
+          pushd app && bun i && popd
+      - name: docker build
+        run: |
+          docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
+      - name: docker push
+        run: |
+          docker push docker.pkg.github.com/josholaus/doofus-rick/web:latest
   build-backend:
     runs-on: ubuntu-latest
     steps:
