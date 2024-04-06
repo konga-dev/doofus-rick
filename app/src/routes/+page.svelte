@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { getAnniversaryYears } from '$lib/date'
     import Quote from '../components/quote.svelte'
     import TextInput from '../components/ui/textinput.svelte'
     import type { PageData } from './$types'
@@ -9,6 +10,23 @@
 
     $: filteredQuotes = data.quotes.filter((quote) => {
         return quote.content.toLowerCase().includes(searchValue.toLowerCase())
+    })
+
+    $: filteredQuotes.sort((a, b) => {
+        const aDate = new Date(a.timestamp);
+        const bDate = new Date(b.timestamp);
+        const aYears = getAnniversaryYears(aDate);
+        const bYears = getAnniversaryYears(bDate);
+        if (aYears !== null && bYears === null) {
+            return -1
+        }
+        if (aYears === null && bYears !== null) {
+            return 1
+        }
+        if (aYears !== null && bYears !== null) {
+            return aYears - bYears
+        }
+        return bDate.getTime() - aDate.getTime()
     })
 </script>
 

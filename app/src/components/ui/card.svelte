@@ -5,7 +5,7 @@
     <div class="flex items-center space-x-4 px-8 pt-8">
         <slot name="content" />
     </div>
-    <div class="flex items-center justify-center p-6">
+    <div class="flex flex-col items-center justify-center p-6 space-y-2">
         <slot name="footer" />
     </div>
 </div>
