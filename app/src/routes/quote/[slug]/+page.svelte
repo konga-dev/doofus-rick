@@ -6,4 +6,8 @@
     let quote = data.quote
 </script>
 
+<svelte:head>
+    <title>doofus-rick - {quote.content.substring(0, 25)}...</title>
+</svelte:head>
+
 <Quote {quote} />
