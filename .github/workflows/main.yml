@@ -20,7 +20,7 @@ jobs:
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
       - name: bun install
         run: |
-          pushd app && bun i && popd
+          cd app && bun i
       - name: docker build
         run: |
           docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
@@ -41,7 +41,7 @@ jobs:
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
       - name: bun install
         run: |
-          pushd server && bun i && popd
+          cd server && bun i
       - name: docker build
         run: |
           docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
