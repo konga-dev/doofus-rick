@@ -17,27 +17,27 @@ export default class CakeDayTask implements ITextChannelTask {
             return
         }
 
-        cakeQuotes.forEach((quote) => {
-            let creator = this.channel.members.find((member) => member.id === quote[0].creator)
+        cakeQuotes.forEach(({ quote, age }) => {
+            let creator = this.channel.members.find((member) => member.id === quote.creator)
 
             let embed = new EmbedBuilder()
-                .setTitle(`Look who is turning **${quote[1]}** today!`)
+                .setTitle(`Look who is turning **${age}** today!`)
                 .setColor('Random')
-                .setDescription(quote[0].content)
+                .setDescription(quote.content)
                 .setFooter({
                     text: creator?.nickname ?? 'Unknown author',
                     iconURL: creator?.displayAvatarURL() ?? undefined,
                 })
-                .setTimestamp(quote[0].timestamp)
+                .setTimestamp(quote.timestamp)
 
             this.channel.send({ embeds: [embed] })
         })
     }
 
-    async getCakeQuotes(): Promise<[Quote, number][] | null> {
+    async getCakeQuotes(): Promise<Array<{ quote: Quote, age: number }>> {
         let quotes = await Database.getInstance().all<Quote>('quote')
         if (!quotes) {
-            return null
+            return []
         }
 
         let today = new Date()
@@ -51,8 +51,7 @@ export default class CakeDayTask implements ITextChannelTask {
                     dateOfQuote.getDate() === today.getDate()
                 )
             })
-            .map((quote) => {
-                return [quote, today.getFullYear() - new Date(quote.timestamp).getFullYear()]
-            })
-    }
+            .map((quote) => ({ quote: quote, age: today.getFullYear() - new Date(quote.timestamp).getFullYear() }))
+			.toSorted((x, y) => y.age - x.age)
+	}
 }
