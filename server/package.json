@@ -4,12 +4,15 @@
   "description": "An amazingly useful Discord Bot for desperate CS students",
   "main": "src/App.ts",
   "scripts": {
+  	"lint": "bunx biome lint --error-on-warnings .",
+  	"format": "bunx biome format --write .",
+    "check": "bunx biome check .",
     "clean": "rimraf dist",
     "build": "yarn clean && tsc -p .",
     "build-docker": "yarn build && docker build -t com.josholaus.doofus-rick:latest",
     "debug": "bun --hot src/App.ts debug",
     "start": "NODE_ENV=production bun src/App.ts production",
-    "format": "prettier --write .",
+    "formatt": "prettier --write .",
     "deploy-commands": "node scripts/deploy-commands.js"
   },
   "repository": {
@@ -26,6 +29,7 @@
   },
   "homepage": "https://github.com/josholaus/doofus-rick#readme",
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@discordjs/rest": "^2.2.0",
     "@types/node-cron": "^3.0.11",
     "nodemon": "^3.1.0",

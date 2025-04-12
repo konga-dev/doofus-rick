@@ -10,14 +10,14 @@ import { IModel } from './IModel'
  * - creator: string    # the creator of the quote (who added it to the database, = Discord ID)
  */
 class Quote implements IModel {
-    constructor(
-        public readonly _id: ObjectId | null,
-        public content: string,
-        public creator: string,
-        public timestamp: number,
-        public participants: Array<string> = [],
-        public votes: number = 0,
-    ) {}
+	constructor(
+		public readonly _id: ObjectId | null,
+		public content: string,
+		public creator: string,
+		public timestamp: number,
+		public participants: Array<string> = [],
+		public votes: number = 0
+	) {}
 }
 
 export { Quote }
