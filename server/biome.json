@@ -50,7 +50,10 @@
 			"quoteStyle": "single",
 			"attributePosition": "auto",
 			"bracketSpacing": true,
-			"enabled": true
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 120
 		}
 	}
 }
