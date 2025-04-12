@@ -3,23 +3,27 @@ import type { ICommand } from './ICommand'
 
 export default class VitalsCommand implements ICommand {
 	async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-		const vitalsEmbed = new EmbedBuilder().setTitle('Doofus Rick Vitals').setFields([
-			{
-				name: 'Uptime',
-				value: this.uptime(),
-				inline: true
-			},
-			{
-				name: 'Image built',
-				value: await this.imageBuilt(),
-				inline: true
-			},
-			{
-				name: 'OS',
-				value: await this.os(),
-				inline: true
-			}
-		])
+		const vitalsEmbed = new EmbedBuilder()
+			.setTitle('Doofus Rick Vitals')
+			.setFields([
+				{
+					name: 'Uptime',
+					value: this.uptime(),
+					inline: true
+				},
+				{
+					name: 'Image built',
+					value: await this.imageBuilt(),
+					inline: true
+				},
+				{
+					name: 'OS',
+					value: await this.os(),
+					inline: true
+				}
+			])
+			.setColor('DarkGreen')
+
 		interaction.reply({ embeds: [vitalsEmbed] })
 	}
 
@@ -29,6 +33,7 @@ export default class VitalsCommand implements ICommand {
 		const hours = Math.floor(time / (60 * 60))
 		const minutes = Math.floor((time % (60 * 60)) / 60)
 		const seconds = Math.floor(time % 60)
+
 		return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
 	}
 
