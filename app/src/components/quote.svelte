@@ -2,7 +2,7 @@
     import { formatDate, getAnniversaryYears } from '$lib/date'
     import type { PageData } from '../routes/$types'
     import ExternalIcon from './icons/external-icon.svelte'
-    import * as Card from '$lib/components/ui/card'
+    import Card from './ui/card.svelte'
     type Quote = PageData['quotes'][0]
 
     export let quote: Quote
@@ -10,13 +10,13 @@
     $: anniversaryYears = getAnniversaryYears(new Date(quote.timestamp))
 </script>
 
-<Card.Root>
-    <Card.Content>
+<Card>
+    <svelte:fragment slot="content">
         <span class="font-serif text-8xl text-zinc-300">”</span>
-        <p class="text-lg italic">{quote.content}</p>
-    </Card.Content>
+        <p class="whitespace-pre-line text-lg italic">{quote.content}</p>
+    </svelte:fragment>
 
-    <Card.Footer>
+    <svelte:fragment slot="footer">
         <div class="flex flex-col items-center space-x-2 space-y-2 text-neutral-400 md:flex-row md:space-y-0">
             <span>Festgehalten von</span>
             <div class="flex space-x-2">
@@ -37,5 +37,5 @@
             <span class="font-semibold text-neutral-400"
                 >Heute vor {anniversaryYears} Jahr{anniversaryYears !== 1 ? 'en' : ''} 🎉</span>
         {/if}
-    </Card.Footer>
-</Card.Root>
+    </svelte:fragment>
+</Card>
