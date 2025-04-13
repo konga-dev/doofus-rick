@@ -1,7 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { getUserById } from '../../discord/Client'
 import { databaseDecorator, discordClientDecorator } from '../Setup'
-import { Quote } from '../../common/Quote'
 
 const discordPlugin = new Elysia({ name: 'Discord' })
 	.use(databaseDecorator)
@@ -28,9 +27,9 @@ const discordPlugin = new Elysia({ name: 'Discord' })
 			)
 			.get(
 				'/creators',
-				async ({ database, discordClient }) =>
+				async ({ prisma, discordClient }) =>
 					await Promise.all(
-						Array.from(new Set((await database.all<Quote>('quote')).map((quote) => quote.creator))).map(async (creator) => {
+						Array.from(new Set((await prisma.quote.findMany()).map((quote) => quote.creator))).map(async (creator) => {
 							const user = await getUserById(discordClient, creator)
 							if (!user) {
 								return
