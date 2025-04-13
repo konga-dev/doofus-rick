@@ -1,6 +1,7 @@
-import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials, Snowflake } from 'discord.js'
+import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials, type Snowflake } from 'discord.js'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'
+
 import { TaskScheduler } from './TaskScheduler'
 import { AutoResponseListener, NameListener } from './listener'
 
@@ -37,7 +38,7 @@ client.on(Events.MessageCreate, AutoResponseListener.onEvent)
 client.on(Events.GuildMemberUpdate, NameListener.onEvent)
 
 client.on(Events.MessageCreate, async (interaction) => {
-	if (interaction.author.bot || interaction.channel.type != ChannelType.DM || interaction.author.id === joshId) {
+	if (interaction.author.bot || interaction.channel.type !== ChannelType.DM || interaction.author.id === joshId) {
 		return
 	}
 	const josh = await client.users.fetch(joshId)

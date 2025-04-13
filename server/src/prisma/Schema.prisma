@@ -1,0 +1,20 @@
+datasource DB {
+    provider = "mongodb"
+    url      = env("MONGODB_URI")
+}
+
+generator Client {
+    provider = "prisma-client-js"
+    output   = "./gen/prisma/client"
+}
+
+model Quote {
+    id           String   @id @default(auto()) @map("_id") @DB.ObjectId
+    content      String
+    creator      String
+    timestamp    Int
+    participants String[]
+    votes        Int
+
+    @@map("quotes")
+}

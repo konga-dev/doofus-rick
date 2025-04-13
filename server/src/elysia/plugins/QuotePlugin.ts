@@ -1,13 +1,14 @@
+import type { Client } from 'discord.js'
 import { Elysia, t } from 'elysia'
 import log4js from 'log4js'
-import { Quote } from '../../common/Quote'
-import { getUserById } from '../../discord/Client'
-import { databaseDecorator, discordClientDecorator } from '../Setup'
 import { ObjectId } from 'mongodb'
+import { getUserById } from '../../discord/Client'
+import type { Quote } from '../../prisma/gen/prisma/client'
+import { databaseDecorator, discordClientDecorator } from '../Setup'
 
-const mapToClientQuote = async (quote: Quote, discordClient: any) => {
+const mapToClientQuote = async (quote: Quote, discordClient: Client) => {
 	return {
-		_id: quote._id,
+		_id: quote.id,
 		content: quote.content,
 		timestamp: quote.timestamp,
 		creator: await getUserById(discordClient, quote.creator),
@@ -22,43 +23,48 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 	.decorate('logger', log4js.getLogger('QuotePlugin'))
 	.group('/quote', (app) =>
 		app
-			.get('', async ({ database, discordClient }) => {
-				const quotes = await database.all<Quote>('quote')
+			.get('', async ({ prisma, discordClient }) => {
+				const quotes = await prisma.quote.findMany({})
 
 				return Promise.all(quotes.map(async (quote) => mapToClientQuote(quote, discordClient)))
 			})
-			.get('/random', async ({ set, database, discordClient }) => {
-				const quote = await database.getRandom<Quote>('quote')
+			.get('/random', async ({ set, prisma }) => {
+				const quote: Quote = (await prisma.quote.aggregateRaw({
+					pipeline: [{ $sample: { size: 1 } }]
+				})) as Quote
 
 				if (!quote) {
 					set.status = 404
 					return
 				}
 
-				return quote._id?.toString()
+				return quote.id?.toString()
 			})
-			.get('/byId/:id', async ({ set, database, discordClient, params: { id } }) => {
+			.get('/byId/:id', async ({ set, prisma, discordClient, params: { id } }) => {
 				if (!ObjectId.isValid(id)) {
 					set.status = 400
 					return
 				}
-				const quotes = await database.get<Quote>('quote', {
-					_id: new ObjectId(id)
+				const quote = await prisma.quote.findUnique({
+					where: {
+						id: id
+					}
 				})
 
-				if (quotes.length == 0) {
+				if (!quote) {
 					set.status = 404
 					return
 				}
-				let quote = quotes[0]
 
 				return mapToClientQuote(quote, discordClient)
 			})
 			.get(
 				'/byCreator/:creatorId',
-				async ({ database, discordClient, params: { creatorId } }) => {
-					const quotes = await database.get<Quote>('quote', {
-						creator: creatorId
+				async ({ prisma, discordClient, params: { creatorId } }) => {
+					const quotes = await prisma.quote.findMany({
+						where: {
+							creator: creatorId
+						}
 					})
 
 					return Promise.all(quotes.map(async (quote) => mapToClientQuote(quote, discordClient)))

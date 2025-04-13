@@ -1,19 +1,28 @@
-import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
-import { ICommand } from './ICommand'
-import { Quote } from '../../common/Quote'
-import { Database } from '../../common/Database'
+import { type CacheType, type CommandInteraction, EmbedBuilder } from 'discord.js'
+import { prisma } from '../../prisma/Client'
+import type { Quote } from '../../prisma/gen/prisma/client'
+import type { ICommand } from './ICommand'
 
 export default class QuoteCommand implements ICommand {
-	async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-		let quote = interaction.options.get('quote')
+	public execute = async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+		const quote = interaction.options.get('quote')
+
 		if (!quote) {
 			await interaction.reply({ content: 'You need to provide a quote!', ephemeral: true })
 			return
 		}
-		let stringQuote = (quote.value as string).replaceAll('\\n', '\n')
-		const quoteObject = new Quote(null, stringQuote, interaction.user.id, Date.now(), [], 0)
+
+		const quoteObject: Omit<Quote, 'id'> = {
+			content: (quote.value as string).replaceAll('\\n', '\n'),
+			creator: interaction.user.id,
+			timestamp: Date.now(),
+			votes: 0,
+			participants: [],
+		}
 		const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
-		await Database.getInstance().insert<Quote>('quote', quoteObject) // this usually never takes more than 3 seconds, so we don't need to defer
+
+		await prisma.quote.create({ data: quoteObject })
+
 		const quoteEmbed = new EmbedBuilder()
 			.setColor('Random')
 			.setDescription(quoteObject.content)

@@ -1,15 +1,19 @@
-import { CacheType, CommandInteraction, EmbedBuilder } from 'discord.js'
-import { ICommand } from './ICommand'
-import { Database } from '../../common/Database'
-import { Quote } from '../../common/Quote'
+import { type CacheType, type CommandInteraction, EmbedBuilder } from 'discord.js'
+import { prisma } from '../../prisma/Client'
+import type { Quote } from '../../prisma/gen/prisma/client'
+import type { ICommand } from './ICommand'
 
 export default class RandomQuoteCommand implements ICommand {
-	async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
-		const quote = await Database.getInstance().getRandom<Quote>('quote')
+	public execute = async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+		const quote: Quote = (await prisma.quote.aggregateRaw({
+			pipeline: [{ $sample: { size: 1 } }]
+		}))[0] as Quote
+
 		if (!quote) {
 			await interaction.reply({ content: 'Could not fetch quote' })
 			return
 		}
+
 		const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === quote.creator)
 		const quoteEmbed = new EmbedBuilder()
 			.setColor('Random')
@@ -19,6 +23,7 @@ export default class RandomQuoteCommand implements ICommand {
 				iconURL: quoteCreator?.displayAvatarURL() ?? undefined
 			})
 			.setTimestamp(quote.timestamp)
+
 		await interaction.reply({ embeds: [quoteEmbed] })
 	}
 }
