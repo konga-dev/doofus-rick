@@ -15,6 +15,7 @@ COPY . .
 # Build
 ENV NODE_ENV=production
 RUN bun run build
+RUN bun run prisma
 
 # Copy production dependencies and source code into the final image.
 FROM base AS release
