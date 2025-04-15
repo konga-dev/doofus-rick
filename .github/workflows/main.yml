@@ -37,6 +37,7 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
       - name: bun install
