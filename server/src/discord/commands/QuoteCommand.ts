@@ -19,6 +19,7 @@ export default class QuoteCommand implements ICommand {
 			votes: 0,
 			participants: [],
 		}
+
 		const quoteCreator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
 
 		await prisma.quote.create({ data: quoteObject })
