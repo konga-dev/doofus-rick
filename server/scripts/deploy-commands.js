@@ -1,36 +1,40 @@
 /*
-    This script is for deploying Discord commands. It needs to be run every time you add/remove or edit a command.
-    You can always use the command `npm run deploy-commands` to redeploy commands.
-    Simply add a SlashCommandBuilder to the `commands` array while using the desired building functions.
+	This script is for deploying Discord commands. It needs to be run every time you add/remove or edit a command.
+	You can always use the command `npm run deploy-commands` to redeploy commands.
+	Simply add a SlashCommandBuilder to the `commands` array while using the desired building functions.
 
-    For more information, see
-    https://discordjs.guide/creating-your-bot/command-deployment.html#command-registration
+	For more information, see
+	https://discordjs.guide/creating-your-bot/command-deployment.html#command-registration
 */
 
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v9')
-const dotenv = require('dotenv')
+import { SlashCommandBuilder } from '@discordjs/builders'
+import { REST } from '@discordjs/rest'
+import { Routes } from 'discord-api-types/v9'
+import { config } from 'dotenv'
 
-dotenv.config()
+config()
 
 const commands = [
-	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
+	new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Replies with pong!'),
 	new SlashCommandBuilder()
 		.setName('quote')
 		.setDescription('Stores a quote for later')
 		.addStringOption((option) => option.setName('quote').setDescription('The quote to be stored').setRequired(true)),
-	new SlashCommandBuilder().setName('randomquote').setDescription('Gets a random quote to brighten your day!'),
-	new SlashCommandBuilder().setName('vitals').setDescription("Shows Doofus Rick's vital signs"),
+	new SlashCommandBuilder()
+		.setName('randomquote')
+		.setDescription('Gets a random quote to brighten your day!'),
+	new SlashCommandBuilder()
+		.setName('vitals')
+		.setDescription("Shows Doofus Rick's vital signs"),
 	new SlashCommandBuilder()
 		.setName('votekick')
 		.setDescription('Votes to kick someone from the voice channel')
 		.addUserOption((option) => option.setName('user').setDescription('The user to be kicked').setRequired(true)),
 	new SlashCommandBuilder()
 		.setName('noproductive')
-		.addIntegerOption((option) =>
-			option.setName('index').setDescription('The index of the channel to move into (starts at 0)').setRequired(false)
-		)
+		.addIntegerOption((option) => option.setName('index').setDescription('The index of the channel to move into (starts at 0)').setRequired(false))
 		.setDescription('Moves everyone from the productive zone to general'),
 	new SlashCommandBuilder()
 		.setName('send')
@@ -45,8 +49,6 @@ const commands = [
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)
-rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_QQT_ID), {
-	body: commands
-})
+rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_QQT_ID), { body: commands })
 	.then(() => console.log('Successfully deployed commands'))
 	.catch(console.error)

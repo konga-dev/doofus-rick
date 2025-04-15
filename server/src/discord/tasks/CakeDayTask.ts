@@ -31,24 +31,15 @@ export default class CakeDayTask implements ITextChannelTask {
 	}
 
 	async getCakeQuotes(): Promise<Array<{ quote: Quote; age: number }>> {
-		const quotes = await prisma.quote.findMany()
+		const today = new Date();
 
-		if (!quotes) {
-			return []
-		}
-
-		const today = new Date()
-
-		return quotes
-			.filter((quote) => {
-				const dateOfQuote = new Date(quote.timestamp)
-				return (
-					dateOfQuote.getFullYear() !== today.getFullYear() &&
-					dateOfQuote.getMonth() === today.getMonth() &&
-					dateOfQuote.getDate() === today.getDate()
-				)
-			})
-			.map((quote) => ({ quote: quote, age: today.getFullYear() - new Date(quote.timestamp).getFullYear() }))
+		return (await prisma.quote.findMany())
+			.map((quote) => ({ quote: quote, date: new Date(quote.timestamp) }))
+			.filter(({ date }) =>
+				date.getFullYear() <= today.getFullYear() &&
+				date.getMonth() === today.getMonth() &&
+				date.getDate() === today.getDate())
+			.map(({ quote, date }) => ({ quote: quote, age: today.getFullYear() - date.getFullYear() }))
 			.toSorted((x, y) => y.age - x.age)
 	}
 }
