@@ -3,6 +3,7 @@ name: Docker Pipeline
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-frontend:
@@ -43,6 +44,8 @@ jobs:
         run: |
           cd server && bun i
       - name: docker build
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           cd server && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
       - name: docker push
