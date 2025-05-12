@@ -1,9 +1,8 @@
-import { Client, TextChannel } from 'discord.js'
-import * as cron from 'node-cron'
+import type { Client, TextChannel } from 'discord.js'
 import log4js from 'log4js'
-
-import { ITask } from './tasks/ITask'
+import * as cron from 'node-cron'
 import { CakeDayTask } from './tasks/'
+import type { ITask } from './tasks/ITask'
 
 interface TaskEntry {
 	name: string
@@ -38,6 +37,7 @@ class TaskScheduler {
 	}
 
 	registerTasks(): void {
+		// biome-ignore lint: oida loss mi mei forEach schreibn
 		this.tasks.forEach((task) => {
 			if (!cron.validate(task.schedule)) {
 				throw new Error(`ERROR: Invalid cron schedule expression for task '${task.name}'`)

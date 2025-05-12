@@ -30,7 +30,7 @@ export default class CakeDayTask implements ITextChannelTask {
 			})
 	}
 
-	async getCakeQuotes(): Promise<Array<{ quote: Quote; age: number }>> {
+	private getCakeQuotes = async (): Promise<Array<{ quote: Quote; age: number }>> => {
 		const today = new Date();
 
 		return (await prisma.quote.findMany())

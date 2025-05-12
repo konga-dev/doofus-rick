@@ -1,5 +1,5 @@
 import * as Commands from './commands'
-import { ICommand } from './commands/ICommand'
+import type { ICommand } from './commands/ICommand'
 
 interface CommandEntry {
 	name: string

@@ -26,11 +26,10 @@ client.once(Events.ClientReady, () => {
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {
-	if (!interaction.isCommand()) {
-		return
+	if (interaction.isChatInputCommand()) {
+		const { commandName } = interaction
+		CommandRegistry.getCommand(commandName)?.execute(interaction)
 	}
-	const { commandName } = interaction
-	CommandRegistry.getCommand(commandName)?.execute(interaction)
 })
 
 client.on(Events.MessageCreate, AutoResponseListener.onEvent)
