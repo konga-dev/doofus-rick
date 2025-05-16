@@ -1,4 +1,4 @@
-import { ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials, type Snowflake } from 'discord.js'
+import { Activity, ActivityType, ChannelType, Client, EmbedBuilder, Events, GatewayIntentBits, Partials, type Snowflake } from 'discord.js'
 import log4js from 'log4js'
 import CommandRegistry from './CommandRegistry'
 
@@ -22,6 +22,10 @@ const client = new Client({
 
 client.once(Events.ClientReady, () => {
 	log4js.getLogger('Discord').info('Successfully connected to Discord')
+	client.user?.setPresence({
+		status: 'online',
+		activities: [{ type: ActivityType.Watching, name: 'joshis muada auf youporn' }]
+	})
 	new TaskScheduler(client).registerTasks()
 })
 
