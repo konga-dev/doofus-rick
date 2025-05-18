@@ -48,7 +48,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 
 				return quote.id?.toString()
 			})
-			.get('/byId/:id', async ({ set, prisma, discordClient, params: { id } }) => {
+			.get('/:id', async ({ set, prisma, discordClient, params: { id } }) => {
 				if (!ObjectId.isValid(id)) {
 					set.status = 400
 					return
@@ -67,11 +67,11 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 				return mapToClientQuote(quote, discordClient)
 			})
 			.get(
-				'/byCreator/:creatorId',
-				async ({ prisma, discordClient, params: { creatorId } }) => {
+				'/creator/:id',
+				async ({ prisma, discordClient, params: { id } }) => {
 					const quotes = await prisma.quote.findMany({
 						where: {
-							creator: creatorId
+							creator: id
 						}
 					})
 
@@ -79,7 +79,7 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 				},
 				{
 					params: t.Object({
-						creatorId: t.String()
+						id: t.String()
 					})
 				}
 			)
