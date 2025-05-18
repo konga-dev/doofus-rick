@@ -1,5 +1,5 @@
-import { ActionRowBuilder, Colors, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, UserSelectMenuBuilder } from 'discord.js'
-import type { CacheType, CommandInteraction, ModalActionRowComponentBuilder, ModalSubmitInteraction, UserSelectMenuInteraction } from 'discord.js'
+import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, UserSelectMenuBuilder } from 'discord.js'
+import type { CacheType, CommandInteraction, ModalActionRowComponentBuilder, UserSelectMenuInteraction } from 'discord.js'
 import { prisma } from '../../prisma/Client'
 import type { Quote } from '../../prisma/gen/prisma/client'
 import type { ICommand } from './ICommand'
