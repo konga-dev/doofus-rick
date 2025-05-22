@@ -40,7 +40,7 @@ export default class QuoteCommand implements ICommand {
 		// Await modal submission for 15 seconds
 		const modalSubmission = await interaction.awaitModalSubmit({
 			filter: ({ user: { id }, customId }) => customId === QuoteCommand.QUOTE_MODAL && id === interaction.user.id,
-			time: 120_000
+			time: 30_000
 		})
 
 		await modalSubmission.deferReply({ ephemeral: true })
@@ -92,7 +92,7 @@ export default class QuoteCommand implements ICommand {
 		const collector = modalSubmission.channel!.createMessageComponentCollector({
 			filter: ({ customId }) => customId === QuoteCommand.QUOTE_PARTICIPANTS,
 			max: 3,
-			time: 120_000
+			time: 30_000
 		})
 
 		collector.on('collect', async (selectInteraction: UserSelectMenuInteraction) => {

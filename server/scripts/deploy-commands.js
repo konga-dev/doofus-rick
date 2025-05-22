@@ -20,8 +20,7 @@ const commands = [
 		.setDescription('Replies with pong!'),
 	new SlashCommandBuilder()
 		.setName('quote')
-		.setDescription('Stores a quote for later')
-		.addStringOption((option) => option.setName('quote').setDescription('The quote to be stored').setRequired(true)),
+		.setDescription('Stores a quote for later'),
 	new SlashCommandBuilder()
 		.setName('randomquote')
 		.setDescription('Gets a random quote to brighten your day!'),
