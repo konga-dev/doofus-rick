@@ -1,0 +1,16 @@
+{
+  "name": "monorepo",
+  "private": true,
+  "workspaces": [
+    "server",
+    "app"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "2.2.3"
+  },
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@tailwindcss/oxide",
+    "core-js"
+  ]
+}

@@ -1,59 +1,59 @@
 {
-	"name": "doofus-rick",
-	"version": "1.0.0",
-	"description": "An amazingly useful Discord Bot for desperate CS students",
-	"main": "src/App.ts",
-	"prisma": {
-		"schema": "./src/prisma/Schema.prisma"
-	},
-	"scripts": {
-		"lint": "bunx biome lint --error-on-warnings .",
-		"format": "bunx biome format --write .",
-		"check": "bunx biome check .",
-		"prisma": "bunx prisma generate",
-		"clean": "rimraf dist",
-		"build": "yarn clean && tsc -p .",
-		"build-docker": "yarn build && docker build -t com.josholaus.doofus-rick:latest",
-		"debug": "bun --hot src/App.ts debug",
-		"start": "NODE_ENV=production bun src/App.ts production",
-		"deploy-commands": "node scripts/deploy-commands.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/josholaus/doofus-rick.git"
-	},
-	"contributors": [
-		"Joshua Winkler <josh@bemoty.dev>",
-		"Nicolaus Rossi <n.rossi2002@gmail.com>"
-	],
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/josholaus/doofus-rick/issues"
-	},
-	"homepage": "https://github.com/josholaus/doofus-rick#readme",
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@discordjs/rest": "^2.2.0",
-		"@types/node-cron": "^3.0.11",
-		"nodemon": "^3.1.0",
-		"prettier": "^3.2.5",
-		"rimraf": "^5.0.5",
-		"typescript": "^5.4.3"
-	},
-	"dependencies": {
-		"@elysiajs/cors": "^1.0.2",
-		"@elysiajs/server-timing": "^1.0.2",
-		"@elysiajs/swagger": "^1.0.3",
-		"@prisma/client": "^6.6.0",
-		"bun-types": "^1.1.1",
-		"discord.js": "^14.14.1",
-		"dotenv": "^16.4.5",
-		"elysia": "^1.0.11",
-		"log4js": "^6.9.1",
-		"mongodb": "^6.5.0",
-		"node-cron": "^3.0.3",
-		"prisma": "^6.6.0",
-		"uuid": "^9.0.1",
-		"zod": "^3.22.4"
-	}
+  "name": "doofus-rick",
+  "version": "1.0.0",
+  "description": "An amazingly useful Discord Bot for desperate CS students",
+  "main": "src/App.ts",
+  "prisma": {
+    "schema": "./src/prisma/Schema.prisma"
+  },
+  "scripts": {
+    "lint": "bunx biome lint --error-on-warnings .",
+    "format": "bunx biome format --write .",
+    "check": "bunx biome check .",
+    "prisma": "bunx prisma generate",
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc -p .",
+    "build-docker": "yarn build && docker build -t com.josholaus.doofus-rick:latest",
+    "debug": "bun --hot src/App.ts debug",
+    "start": "NODE_ENV=production bun src/App.ts production",
+    "deploy-commands": "node scripts/deploy-commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josholaus/doofus-rick.git"
+  },
+  "contributors": [
+    "Joshua Winkler <josh@bemoty.dev>",
+    "Nicolaus Rossi <n.rossi2002@gmail.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/josholaus/doofus-rick/issues"
+  },
+  "homepage": "https://github.com/josholaus/doofus-rick#readme",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@discordjs/rest": "^2.2.0",
+    "@types/node-cron": "^3.0.11",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.4.0",
+    "@elysiajs/server-timing": "^1.4.0",
+    "@elysiajs/swagger": "^1.3.1",
+    "@prisma/client": "^6.6.0",
+    "bun-types": "^1.1.1",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "elysia": "^1.4.6",
+    "log4js": "^6.9.1",
+    "mongodb": "^6.5.0",
+    "node-cron": "^3.0.3",
+    "prisma": "^6.6.0",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  }
 }
