@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import type React from 'react'
+import Navigation from '@/components/navigation/navigation'
+import { NavigationProvider } from '@/components/navigation/navigation-context'
 import { ThemeProvider } from '@/components/theme-provider'
-import Navigation from '@/components/navigation'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 const geistSans = Geist({
@@ -33,8 +35,8 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="flex flex-row items-center gap-2 mt-4 ml-4">
-						<Avatar className="h-24 w-24 rounded-full">
+					<div className="flex flex-row items-center justify-center gap-2 mt-4 ml-4">
+						<Avatar className="h-24 w-24 rounded-full mr-2">
 							<AvatarImage src="/doofus-rick.png" alt="CN" />
 						</Avatar>
 						<div className="flex flex-col">
@@ -46,8 +48,12 @@ export default function RootLayout({
 							</div>
 						</div>
 					</div>
-					<Navigation />
-					{children}
+					<div className="mx-auto mt-4 w-[600px]">
+						<NavigationProvider>
+							<Navigation />
+							{children}
+						</NavigationProvider>
+					</div>
 				</ThemeProvider>
 			</body>
 		</html>

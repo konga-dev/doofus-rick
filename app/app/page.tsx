@@ -1,12 +1,25 @@
+import Quote from '@/components/quote'
 import { client } from '@/lib/treaty'
 
-const { data, error } = await client.quote.get()
-const x = data?.at(0)
-
 export default async function Home() {
-    return (
-        <div className="font">
+	const { data, error } = await client.quote.get()
 
-        </div>
-    )
+	if (error || !data) {
+		return <div> dei muada </div>
+	}
+
+	return (
+		<div className="flex flex-col items-center justify-center gap-4">
+			{data.map(quote => (
+				<Quote
+					key={quote._id}
+					content={quote.content}
+					creator={quote.creator}
+					timestamp={quote.timestamp}
+					participants={quote.participants}
+					votes={quote.votes}
+				/>
+			))}
+		</div>
+	)
 }

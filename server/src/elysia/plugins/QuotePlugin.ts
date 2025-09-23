@@ -12,7 +12,9 @@ const mapToClientQuote = async (quote: Quote, discordClient: Client) => {
 		content: quote.content,
 		timestamp: quote.timestamp,
 		creator: await getUserById(discordClient, quote.creator),
-		participants: await Promise.all(quote.participants.map(async (participant) => await getUserById(discordClient, participant))),
+		participants: await Promise.all(
+			quote.participants.map(async (participant) => await getUserById(discordClient, participant))
+		),
 		votes: quote.votes
 	}
 }
@@ -24,29 +26,41 @@ const quotePlugin = new Elysia({ name: 'Quote' })
 	.group('/quote', (app) =>
 		app
 			.get('', async ({ prisma, discordClient }) => {
-				const quotes = await prisma.quote.findMany({})
+				const quotes = await prisma.quote.findMany({ orderBy: { timestamp: 'desc' } })
 
 				return Promise.all(quotes.map(async (quote) => mapToClientQuote(quote, discordClient)))
 			})
-			.get('/random', async ({ set, prisma }) => {
-				const raw = (await prisma.quote.aggregateRaw({
-					pipeline: [{ $sample: { size: 1 } }]
-					// biome-ignore lint/suspicious/noExplicitAny:
-				}))[0] as any
+			.get('/random', async ({ set, prisma, discordClient }) => {
+				const raw = (
+					await prisma.quote.aggregateRaw({
+						pipeline: [{ $sample: { size: 1 } }]
+						// biome-ignore lint/suspicious/noExplicitAny:
+					})
+				)[0] as unknown as Quote & { _id: { $oid: string } }
 
 				if (!raw) {
 					set.status = 404
 					return
 				}
 
+				const {
+					id,
+					_id: { $oid },
+					creator,
+					participants,
+					...rest
+				} = raw
+
 				// Prisma `aggregateRaw` bypasses `@map()` operations in the defined schema.
 				// This means that `_id` is never mapped to `id`.
-				const quote = {
-					...raw,
-					id: raw._id.$oid
-				} satisfies Quote
-
-				return quote.id?.toString()
+				return {
+					id: $oid.toString(),
+					creator: await getUserById(discordClient, creator),
+					participants: Promise.all(
+						participants.map(async (participant) => await getUserById(discordClient, participant))
+					),
+					...rest
+				}
 			})
 			.get('/:id', async ({ set, prisma, discordClient, params: { id } }) => {
 				if (!ObjectId.isValid(id)) {
