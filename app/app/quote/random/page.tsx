@@ -1,8 +1,6 @@
-import {
-	RandomQuoteButton,
-	RandomQuoteButtonInjector,
-} from '@/app/random/random-quote-button'
-import Quote from '@/components/quote'
+import { RandomQuoteButtonInjector } from '@/app/quote/random/random-quote-button'
+import RequiresAuth from '@/components/ui/auth/requires-auth'
+import Quote from '@/components/ui/quote/quote'
 import { client } from '@/lib/treaty'
 
 export default async function Random() {
@@ -13,7 +11,7 @@ export default async function Random() {
 	}
 
 	return (
-		<>
+		<RequiresAuth>
 			<RandomQuoteButtonInjector />
 			<div className="flex items-center justify-center gap-4">
 				<Quote
@@ -25,6 +23,6 @@ export default async function Random() {
 					votes={data.votes}
 				/>
 			</div>
-		</>
+		</RequiresAuth>
 	)
 }

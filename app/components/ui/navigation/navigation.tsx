@@ -3,8 +3,8 @@
 import { FilePlus, PencilLine } from 'lucide-react'
 import Link from 'next/link'
 import type React from 'react'
-import { useNavigation } from '@/components/navigation/navigation-context'
-import { Avatar, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useNavigation } from '@/components/ui/navigation/navigation-context'
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -12,7 +12,7 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList,
 	NavigationMenuTrigger,
-} from '../ui/navigation-menu'
+} from '../navigation-menu'
 
 export default function Navigation() {
 	const { extraItems } = useNavigation()
@@ -29,7 +29,7 @@ export default function Navigation() {
 									<NavigationMenuLink asChild>
 										<a
 											className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
-											href="/"
+											href="/quote"
 										>
 											<div className="flex flex-row items-center gap-2 mt-4 mb-2">
 												<Avatar>
@@ -37,6 +37,7 @@ export default function Navigation() {
 														src="/doofus-rick.png"
 														alt="CN"
 													/>
+													<AvatarFallback />
 												</Avatar>
 												<div className="text-lg font-medium">
 													doofus rick
@@ -49,11 +50,14 @@ export default function Navigation() {
 										</a>
 									</NavigationMenuLink>
 								</li>
-								<ListItem href="/random" title="Random quote">
+								<ListItem
+									href="/quote/random"
+									title="Random quote"
+								>
 									A random quote that brightens your day.
 								</ListItem>
 								<ListItem
-									href="/cakeday"
+									href="/quote/cakeday"
 									title="Cakeday quotes"
 								>
 									All quotes that celebrate their cakeday

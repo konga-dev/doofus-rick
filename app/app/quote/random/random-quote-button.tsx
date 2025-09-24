@@ -2,8 +2,8 @@
 
 import { Sparkles } from 'lucide-react'
 import { useEffect } from 'react'
-import { useNavigation } from '@/components/navigation/navigation-context'
 import { Button } from '@/components/ui/button'
+import { useNavigation } from '@/components/ui/navigation/navigation-context'
 
 export function RandomQuoteButtonInjector() {
 	const { setExtraItems } = useNavigation()

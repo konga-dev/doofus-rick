@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "An amazingly useful Discord Bot for desperate CS students",
   "main": "src/App.ts",
-  "prisma": {
-    "schema": "./src/prisma/Schema.prisma"
-  },
   "scripts": {
     "lint": "bunx biome lint --error-on-warnings .",
     "format": "bunx biome format --write .",
@@ -52,7 +49,7 @@
     "log4js": "^6.9.1",
     "mongodb": "^6.5.0",
     "node-cron": "^3.0.3",
-    "prisma": "^6.6.0",
+    "prisma": "^6.15.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   }
