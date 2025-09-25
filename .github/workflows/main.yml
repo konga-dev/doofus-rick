@@ -24,10 +24,10 @@ jobs:
           cd app && bun i
       - name: docker build
         run: |
-          cd app && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
+          cd app && docker build . -t docker.pkg.github.com/kon-ga/doofus-rick/web:latest
       - name: docker push
         run: |
-          docker push docker.pkg.github.com/josholaus/doofus-rick/web:latest
+          docker push docker.pkg.github.com/kon-ga/doofus-rick/web:latest
   build-backend:
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
-          cd server && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/bot:latest
+          cd server && docker build . -t docker.pkg.github.com/kon-ga/doofus-rick/bot:latest
       - name: docker push
         run: |
-          docker push docker.pkg.github.com/josholaus/doofus-rick/bot:latest
+          docker push docker.pkg.github.com/kon-ga/doofus-rick/bot:latest
