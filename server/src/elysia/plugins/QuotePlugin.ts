@@ -1,14 +1,14 @@
+import type { Quote } from '@prisma/client'
 import type { Client } from 'discord.js'
 import { Elysia, t } from 'elysia'
 import log4js from 'log4js'
 import { ObjectId } from 'mongodb'
 import { getUserById } from '../../discord/Client'
-import type { Quote } from '../../prisma/gen/prisma/client'
-import { databaseDecorator, discordClientDecorator } from '../Setup'
+import { useDiscord, usePrisma } from '../Setup'
 
-const mapToClientQuote = async (quote: Quote, discordClient: Client) => {
+const populateWithDiscordUsers = async (quote: Quote, discordClient: Client) => {
 	return {
-		_id: quote.id,
+		id: quote.id,
 		content: quote.content,
 		timestamp: quote.timestamp,
 		creator: await getUserById(discordClient, quote.creator),
@@ -19,84 +19,54 @@ const mapToClientQuote = async (quote: Quote, discordClient: Client) => {
 	}
 }
 
-const quotePlugin = new Elysia({ name: 'Quote' })
-	.use(databaseDecorator)
-	.use(discordClientDecorator)
+const quotePlugin = new Elysia({ name: 'Quote', prefix: '/quote' })
+	.use(usePrisma())
+	.use(useDiscord())
 	.decorate('logger', log4js.getLogger('QuotePlugin'))
-	.group('/quote', (app) =>
-		app
-			.get('', async ({ prisma, discordClient }) => {
-				const quotes = await prisma.quote.findMany({ orderBy: { timestamp: 'desc' } })
+	.get('/', async ({ prisma, discord }) => {
+		const quotes = await prisma.quote.findMany({ orderBy: { timestamp: 'desc' } })
 
-				return Promise.all(quotes.map(async (quote) => mapToClientQuote(quote, discordClient)))
-			})
-			.get('/random', async ({ set, prisma, discordClient }) => {
-				const raw = (
-					await prisma.quote.aggregateRaw({
-						pipeline: [{ $sample: { size: 1 } }]
-						// biome-ignore lint/suspicious/noExplicitAny:
-					})
-				)[0] as unknown as Quote & { _id: { $oid: string } }
-
-				if (!raw) {
-					set.status = 404
-					return
-				}
-
-				const {
-					id,
-					_id: { $oid },
-					creator,
-					participants,
-					...rest
-				} = raw
-
-				// Prisma `aggregateRaw` bypasses `@map()` operations in the defined schema.
-				// This means that `_id` is never mapped to `id`.
-				return {
-					id: $oid.toString(),
-					creator: await getUserById(discordClient, creator),
-					participants: Promise.all(
-						participants.map(async (participant) => await getUserById(discordClient, participant))
-					),
-					...rest
+		return Promise.all(quotes.map(async (quote) => populateWithDiscordUsers(quote, discord)))
+	})
+	.get(
+		'/:id',
+		async ({ set, prisma, discord, params: { id } }) => {
+			if (!ObjectId.isValid(id)) {
+				set.status = 400
+				return
+			}
+			const quote = await prisma.quote.findUnique({
+				where: {
+					id: id
 				}
 			})
-			.get('/:id', async ({ set, prisma, discordClient, params: { id } }) => {
-				if (!ObjectId.isValid(id)) {
-					set.status = 400
-					return
-				}
-				const quote = await prisma.quote.findUnique({
-					where: {
-						id: id
-					}
-				})
 
-				if (!quote) {
-					set.status = 404
-					return
-				}
+			if (!quote) {
+				set.status = 404
+				return
+			}
 
-				return mapToClientQuote(quote, discordClient)
-			})
-			.get(
-				'/creator/:id',
-				async ({ prisma, discordClient, params: { id } }) => {
-					const quotes = await prisma.quote.findMany({
-						where: {
-							creator: id
-						}
-					})
-
-					return Promise.all(quotes.map(async (quote) => mapToClientQuote(quote, discordClient)))
-				},
-				{
-					params: t.Object({
-						id: t.String()
-					})
-				}
-			)
+			return populateWithDiscordUsers(quote, discord)
+		},
+		{ params: t.Object({ id: t.String() }) }
 	)
+	.get('/self', () => {})
+	.get('/random', async ({ set, prisma, discord }) => {
+		const [quotesCount, quotes] = await Promise.allSettled([prisma.quote.count(), prisma.quote.findMany()])
+
+		if (quotesCount.status !== 'fulfilled' || quotes.status !== 'fulfilled') {
+			set.status = 'Internal Server Error'
+			return
+		}
+
+		const quote = quotes.value.at(Math.floor(Math.random() * (quotesCount.value + 1)))
+
+		if (!quote) {
+			set.status = 'Internal Server Error'
+			return
+		}
+
+		return populateWithDiscordUsers(quote, discord)
+	})
 
 export { quotePlugin }

@@ -1,12 +1,12 @@
 import RequiresAuth from '@/components/ui/auth/requires-auth'
 import Quote from '@/components/ui/quote/quote'
-import { client } from '@/lib/treaty'
+import { client } from "@/lib/treaty";
 
 export default async function Home() {
 	const { data, error } = await client.quote.get()
 
-	if (error || !data) {
-		return <div> dei muada </div>
+	if (error) {
+		return <h1>dei muada</h1>
 	}
 
 	return (
@@ -14,12 +14,12 @@ export default async function Home() {
 			<div className="flex flex-col items-center justify-center gap-4">
 				{data.map(quote => (
 					<Quote
-						key={quote._id}
+						key={quote.id}
 						content={quote.content}
 						creator={quote.creator}
 						timestamp={quote.timestamp}
-						participants={quote.participants}
-						votes={quote.votes}
+						participants={[]}
+						votes={0}
 					/>
 				))}
 			</div>

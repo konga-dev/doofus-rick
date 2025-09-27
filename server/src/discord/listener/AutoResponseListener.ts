@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Message, TextChannel } from 'discord.js'
 
 interface AutoResponse {
 	regex: RegExp
@@ -33,7 +33,7 @@ const onEvent = async (event: Message<boolean>) => {
 	if (event.author.bot) return
 	autoResponses.forEach((autoResponse) => {
 		if (autoResponse.regex.test(content)) {
-			channel.send(autoResponse.response)
+			;(channel as TextChannel).send(autoResponse.response)
 		}
 	})
 }

@@ -1,7 +1,20 @@
-import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, UserSelectMenuBuilder } from 'discord.js'
-import type { CacheType, CommandInteraction, ModalActionRowComponentBuilder, UserSelectMenuInteraction } from 'discord.js'
-import { prisma } from '../../prisma/Client'
-import type { Quote } from '../../prisma/gen/prisma/client'
+import type { Quote } from '@prisma/client'
+import {
+	ActionRowBuilder,
+	EmbedBuilder,
+	ModalBuilder,
+	type TextChannel,
+	TextInputBuilder,
+	TextInputStyle,
+	UserSelectMenuBuilder
+} from 'discord.js'
+import type {
+	CacheType,
+	CommandInteraction,
+	ModalActionRowComponentBuilder,
+	UserSelectMenuInteraction
+} from 'discord.js'
+import { prisma } from '../../../../prisma/client'
 import type { ICommand } from './ICommand'
 
 export default class QuoteCommand implements ICommand {
@@ -10,28 +23,25 @@ export default class QuoteCommand implements ICommand {
 	public static QUOTE_PARTICIPANTS = 'participants'
 
 	private placeholders: Array<string> = [
-		"Everything that has been said.",
-		"The very intellectual conversation goes here.",
+		'Everything that has been said.',
+		'The very intellectual conversation goes here.',
 		"Damn. What a stupid thing to come frome someone's mouth.",
-		"*Facepalm*",
+		'*Facepalm*',
 		'The super awesome quote-worthy text you just witnessed.'
 	]
 
 	public execute = async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-		const modal = new ModalBuilder()
-			.setCustomId(QuoteCommand.QUOTE_MODAL)
-			.setTitle('Time for a new quote!')
+		const modal = new ModalBuilder().setCustomId(QuoteCommand.QUOTE_MODAL).setTitle('Time for a new quote!')
 
 		// Create text input for quote
-		const input = new ActionRowBuilder<ModalActionRowComponentBuilder>()
-			.addComponents(
-				new TextInputBuilder()
-					.setCustomId(QuoteCommand.QUOTE_CONTENT)
-					.setLabel('Quote')
-					.setStyle(TextInputStyle.Paragraph)
-					.setRequired(true)
-					.setPlaceholder(this.getRandom(this.placeholders))
-			)
+		const input = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+			new TextInputBuilder()
+				.setCustomId(QuoteCommand.QUOTE_CONTENT)
+				.setLabel('Quote')
+				.setStyle(TextInputStyle.Paragraph)
+				.setRequired(true)
+				.setPlaceholder(this.getRandom(this.placeholders))
+		)
 
 		modal.setComponents(input)
 
@@ -45,7 +55,7 @@ export default class QuoteCommand implements ICommand {
 
 		await modalSubmission.deferReply({ ephemeral: true })
 
-		const quote: Omit<Quote, 'id'> = {
+		const quote = {
 			content: modalSubmission.fields.getTextInputValue(QuoteCommand.QUOTE_CONTENT),
 			creator: interaction.user.id,
 			timestamp: interaction.createdTimestamp,
@@ -57,20 +67,19 @@ export default class QuoteCommand implements ICommand {
 
 		if (!quoteWithId) {
 			await modalSubmission.editReply({
-				content: 'An error occured and your quote could not be saved! :(',
+				content: 'An error occured and your quote could not be saved! :('
 			})
 
 			return
 		}
 
-		const participantSelection = new ActionRowBuilder<UserSelectMenuBuilder>()
-			.addComponents(
-				new UserSelectMenuBuilder()
-					.setCustomId(QuoteCommand.QUOTE_PARTICIPANTS)
-					.setPlaceholder('Participants')
-					.setMinValues(1)
-					.setMaxValues(25)
-			)
+		const participantSelection = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
+			new UserSelectMenuBuilder()
+				.setCustomId(QuoteCommand.QUOTE_PARTICIPANTS)
+				.setPlaceholder('Participants')
+				.setMinValues(1)
+				.setMaxValues(25)
+		)
 
 		const creator = interaction.guild?.members.cache.find((member) => member.id === interaction.user.id)
 		const embeds = new EmbedBuilder()
@@ -85,7 +94,7 @@ export default class QuoteCommand implements ICommand {
 		await modalSubmission.editReply({
 			content: 'Quote was saved! Now please select all users that were a part of it! :)',
 			embeds: [embeds],
-			components: [participantSelection],
+			components: [participantSelection]
 		})
 
 		// biome-ignore lint: dei muada is a forbidden null-assertion
@@ -117,7 +126,7 @@ export default class QuoteCommand implements ICommand {
 				})
 			}
 
-			await modalSubmission.channel?.send({
+			await (modalSubmission.channel as TextChannel).send({
 				embeds: [embeds]
 			})
 		})

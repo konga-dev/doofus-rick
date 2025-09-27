@@ -76,12 +76,12 @@ export default function SignIn() {
 					<p className="text-center text-xs text-neutral-500">
 						built by{' '}
 						<Link
-							href="https://josholaus.com"
+							href="https://konga.dev"
 							className="underline"
 							target="_blank"
 						>
 							<span className="dark:text-white/70 cursor-pointer">
-								josholaus.
+								konga.
 							</span>
 						</Link>
 					</p>

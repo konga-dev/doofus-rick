@@ -3,14 +3,20 @@
   "private": true,
   "workspaces": [
     "server",
-    "app"
+    "app",
+    "prisma"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.2.3"
+    "@biomejs/biome": "2.2.3",
+    "prisma": "workspace:*"
   },
   "trustedDependencies": [
     "@biomejs/biome",
     "@tailwindcss/oxide",
     "core-js"
-  ]
+  ],
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "log4js": "^6.9.1"
+  }
 }

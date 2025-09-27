@@ -63,7 +63,7 @@ export default function Navigation() {
 									All quotes that celebrate their cakeday
 									today.
 								</ListItem>
-								<ListItem href="/user" title="Your quotes">
+								<ListItem href="/quote/self" title="Your quotes">
 									All the hilarious moments you've managed to
 									capture.
 								</ListItem>

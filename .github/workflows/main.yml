@@ -24,7 +24,7 @@ jobs:
           cd app && bun i
       - name: docker build
         run: |
-          cd app && docker build . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
+          docker build -f app/Dockerfile . -t docker.pkg.github.com/josholaus/doofus-rick/web:latest
       - name: docker push
         run: |
           docker push docker.pkg.github.com/josholaus/doofus-rick/web:latest

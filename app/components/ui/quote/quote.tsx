@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import type { client } from '@/lib/treaty'
 
-type QuoteProps = Omit<Treaty.Data<typeof client.quote.get>[number], '_id'>
+type QuoteProps = Omit<Treaty.Data<typeof client.quote.get>[number], 'id'>
 
 const readableDate = (timestamp: number) => {
 	const quoteDate = new Date(timestamp)
