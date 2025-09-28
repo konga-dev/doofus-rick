@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia'
-import { prisma } from '../../../prisma/client'
+import { prisma } from '@doofus-rick/prisma'
 import { client } from '../discord/Client'
 
 const usePrisma = () => new Elysia({ name: 'Prisma' }).decorate('prisma', prisma)

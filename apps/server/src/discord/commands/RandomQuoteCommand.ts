@@ -1,6 +1,6 @@
 import type { Quote } from '@prisma/client'
 import { type CacheType, type CommandInteraction, EmbedBuilder } from 'discord.js'
-import { prisma } from '../../../../prisma/client'
+import { prisma } from '@doofus-rick/prisma'
 import type { ICommand } from './ICommand'
 
 export default class RandomQuoteCommand implements ICommand {

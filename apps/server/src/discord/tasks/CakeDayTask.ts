@@ -1,6 +1,6 @@
 import type { Quote } from '@prisma/client'
 import { EmbedBuilder, type TextChannel } from 'discord.js'
-import { prisma } from '../../../../prisma/client'
+import { prisma } from '@doofus-rick/prisma'
 import type { ITextChannelTask } from './ITextChannelTask'
 
 export default class CakeDayTask implements ITextChannelTask {

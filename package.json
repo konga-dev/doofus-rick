@@ -1,14 +1,26 @@
 {
-  "name": "monorepo",
-  "private": true,
+  "name": "doofus-rick",
+  "version": "1.0.0",
   "workspaces": [
-    "server",
-    "app",
-    "prisma"
+    "packages/*",
+    "apps/*"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kon-ga/doofus-rick/issues"
+  },
+  "homepage": "https://github.com/kon-ga/doofus-rick#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kon-ga/doofus-rick.git"
+  },
+  "contributors": [
+    "Joshua Winkler <josh@bemoty.dev>",
+    "Nicolaus Rossi <n.rossi2002@gmail.com>"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.2.3",
-    "prisma": "workspace:*"
+    "@doofus-rick/prisma": "workspace:^"
   },
   "trustedDependencies": [
     "@biomejs/biome",

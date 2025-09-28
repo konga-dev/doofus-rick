@@ -14,7 +14,7 @@ import type {
 	ModalActionRowComponentBuilder,
 	UserSelectMenuInteraction
 } from 'discord.js'
-import { prisma } from '../../../../prisma/client'
+import { prisma } from '@doofus-rick/prisma'
 import type { ICommand } from './ICommand'
 
 export default class QuoteCommand implements ICommand {
