@@ -1,6 +1,6 @@
 'use client'
 
-import { FilePlus, PencilLine } from 'lucide-react'
+import { FilePlus, PencilLine, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import type React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -13,9 +13,24 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 } from '../navigation-menu'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '../dropdown-menu'
+import { useSession, signOut } from '@/lib/auth-client'
 
 export default function Navigation() {
 	const { extraItems } = useNavigation()
+	const { data: session } = useSession()
+
+	const handleLogout = async () => {
+		await signOut()
+		window.location.href = '/login'
+	}
 
 	return (
 		<div className="flex justify-between items-center mt-4 ml-4 mr-4 mb-8">
@@ -99,7 +114,39 @@ export default function Navigation() {
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
-			<div className="flex items-center gap-2">{extraItems}</div>
+			<div className="flex items-center gap-2">
+				{extraItems}
+				{session?.user && (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<button
+								type="button"
+								className="cursor-pointer outline-hidden rounded-full"
+							>
+								<Avatar>
+									<AvatarImage
+										src={session.user.image || undefined}
+										alt={session.user.name || 'User'}
+									/>
+									<AvatarFallback>
+										{session.user.name?.[0]?.toUpperCase() || 'U'}
+									</AvatarFallback>
+								</Avatar>
+							</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>
+								{session.user.name}
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem onClick={handleLogout}>
+								<LogOut />
+								Logout
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				)}
+			</div>
 		</div>
 	)
 }

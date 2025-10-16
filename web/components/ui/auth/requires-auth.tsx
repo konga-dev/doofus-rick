@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import type React from 'react'
-import { cookies } from "next/headers";
+import {cookies, headers} from "next/headers";
 import { getAccessToken, getSession } from "@/lib/auth-client";
 
 const GUILD_ID = '691751152034906142'
@@ -10,20 +10,27 @@ export default async function RequiresAuth({
 }: {
 	children: React.ReactNode
 }) {
-	const x = await cookies()
-	x.getAll().forEach(a => console.log(a))
+    const headerz = await headers()
 
-
-	const { data } = await getSession();
+    const { data } = await getSession({
+        fetchOptions: {
+            headers: headerz,
+        },
+    });
 
 	if (!data || !data.user) {
-		redirect("/auth/login");
+		redirect("/login");
 	}
 
-	const tokenData = await getAccessToken({ providerId: 'discord' })
+	const tokenData = await getAccessToken({
+        providerId: 'discord',
+        fetchOptions: {
+            headers: headerz,
+        },
+    })
 
 	if (!tokenData?.data?.accessToken) {
-		redirect("/auth/login");
+		redirect("/login");
 	}
 
 	const guilds = (await (
@@ -35,7 +42,7 @@ export default async function RequiresAuth({
 	).json()) as Array<{ id: string }>;
 
 	if (!guilds.some((guild) => guild.id === GUILD_ID)) {
-		redirect("/auth/forbidden");
+		redirect("/forbidden");
 	}
 
 	return <>{children}</>;
