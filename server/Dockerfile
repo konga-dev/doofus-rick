@@ -1,27 +1,24 @@
-FROM oven/bun:latest AS base
-WORKDIR /app
+FROM oven/bun:1-alpine AS base
+WORKDIR /home/app
 
-FROM base AS deps
-COPY package.json ./
-COPY bun.lock ./
-COPY apps ./apps/
-COPY packages ./packages/
-RUN bun install --frozen-lockfile
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-FROM node:24-alpine AS pre-release
-WORKDIR /app
-COPY --from=deps /app/node_modules .
-COPY --from=deps /app/bun.lock .
-COPY --from=deps /app/package.json .
-COPY --from=deps /app/apps/server ./apps/server
-COPY --from=deps /app/packages/prisma ./packages/prisma
+FROM base AS pre-release
+COPY . .
 
-RUN cd /app/packages/prisma && npx prisma generate
+ENV NODE_ENV=production
+COPY --from=install /temp/dev/node_modules ./node_modules
+RUN bun run prisma
+RUN bun run build
 
 FROM base AS release
-COPY --from=pre-release /app/node_modules .
-COPY --from=pre-release /app/apps/server ./apps/server
-COPY --from=pre-release /app/packages/prisma ./packages/prisma
-COPY --from=pre-release /app/package.json .
+COPY --from=pre-release /home/app/node_modules /home/app/node_modules
+COPY --from=pre-release /home/app/src /home/app/src
+COPY --from=pre-release /home/app/prisma /home/app/prisma
+COPY --from=pre-release /home/app/package.json .
+
 RUN date > ./docker-build-date
-CMD [ "bun", "run", "/app/apps/server/src/App.ts" ]
+CMD [ "bun", "run", "src/App.ts" ]

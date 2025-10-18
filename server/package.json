@@ -6,12 +6,11 @@
     "lint": "bunx biome lint --error-on-warnings ",
     "format": "bunx biome format --write ",
     "check": "bunx biome check ",
-    "build": "tsc -p ",
-    "build-docker": "yarn build && docker build -t com.josholaus.doofus-rick:latest",
+    "build": "tsc -p .",
     "dev": "bun --hot src/App.ts debug",
     "start": "NODE_ENV=production bun src/App.ts production",
     "deploy-commands": "node scripts/deploy-commands.js",
-    "generate": "prisma generate"
+    "prisma": "bunx prisma generate"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
