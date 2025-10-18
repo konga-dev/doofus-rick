@@ -1,7 +1,7 @@
 import type { Client, TextChannel } from 'discord.js'
 import log4js from 'log4js'
 import * as cron from 'node-cron'
-import { CakeDayTask } from './tasks/'
+import { CakeDayTask } from './tasks'
 import type { ITask } from './tasks/ITask'
 
 interface TaskEntry {

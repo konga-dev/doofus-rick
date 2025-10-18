@@ -1,4 +1,4 @@
-import type { CacheType, Collection, CommandInteraction, GuildMember } from 'discord.js'
+import type { CacheType, ChatInputCommandInteraction, Collection, CommandInteraction, GuildMember } from 'discord.js'
 import type { ICommand } from './ICommand'
 
 interface VotekickData {
@@ -22,7 +22,7 @@ export default class VotekickCommand implements ICommand {
 		)
 	}
 
-	async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
+	async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
 		const user = interaction.options.getUser('user')
 		const executor = interaction.member?.user
 		const guild = interaction.guild
@@ -42,7 +42,11 @@ export default class VotekickCommand implements ICommand {
 			return
 		}
 
-		if (!guildExecutor.voice.channel || !guildUser.voice.channel || guildExecutor.voice.channel.id !== guildUser.voice.channel.id) {
+		if (
+			!guildExecutor.voice.channel ||
+			!guildUser.voice.channel ||
+			guildExecutor.voice.channel.id !== guildUser.voice.channel.id
+		) {
 			await interaction.reply({
 				content: 'Sorry, you can only votekick a user in your voice channel',
 				ephemeral: true

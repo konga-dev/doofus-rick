@@ -24,7 +24,7 @@ export default class VitalsCommand implements ICommand {
 			])
 			.setColor('DarkGreen')
 
-		interaction.reply({ embeds: [vitalsEmbed] })
+		await interaction.reply({ embeds: [vitalsEmbed] })
 	}
 
 	private uptime(): string {
@@ -60,27 +60,27 @@ export default class VitalsCommand implements ICommand {
 				case 'linux':
 					// Attempt to get more information about Linux distribution
 					try {
-						const output = Bun.spawnSync(['cat', '/etc/os-release']).stdout.toString();
+						const output = Bun.spawnSync(['cat', '/etc/os-release']).stdout.toString()
 
-						const osrMap = new Map<string, string>();
+						const osrMap = new Map<string, string>()
 						for (const line of output.split('\n')) {
-							const keyval = line.split('=');
+							const keyval = line.split('=')
 							if (keyval.length === 2) {
-								osrMap.set(keyval[0], keyval[1].substring(1, keyval[1].length - 1));
+								osrMap.set(keyval[0], keyval[1].substring(1, keyval[1].length - 1))
 							}
 						}
 
 						if (osrMap.has('NAME')) {
 							if (osrMap.has('VERSION')) {
-								resolve(`${osrMap.get('NAME')} ${osrMap.get('VERSION')}`);
-								return;
+								resolve(`${osrMap.get('NAME')} ${osrMap.get('VERSION')}`)
+								return
 							}
-							resolve(osrMap.get('NAME') ?? 'Unknown');
-							return;
+							resolve(osrMap.get('NAME') ?? 'Unknown')
+							return
 						}
-						resolve('Linux');
+						resolve('Linux')
 					} catch (err) {
-						resolve('Linux');
+						resolve('Linux')
 					}
 					break
 				case 'aix':

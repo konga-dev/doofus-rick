@@ -1,13 +1,15 @@
+import type { Quote } from '@prisma/client'
 import { type CacheType, type CommandInteraction, EmbedBuilder } from 'discord.js'
-import { prisma } from '../../prisma/Client'
-import type { Quote } from '../../prisma/gen/prisma/client'
+import { prisma } from '../../../prisma'
 import type { ICommand } from './ICommand'
 
 export default class RandomQuoteCommand implements ICommand {
 	public execute = async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-		const quote: Quote = (await prisma.quote.aggregateRaw({
-			pipeline: [{ $sample: { size: 1 } }]
-		}))[0] as Quote
+		const quote: Quote = (
+			await prisma.quote.aggregateRaw({
+				pipeline: [{ $sample: { size: 1 } }]
+			})
+		)[0] as Quote
 
 		if (!quote) {
 			await interaction.reply({ content: 'Could not fetch quote' })

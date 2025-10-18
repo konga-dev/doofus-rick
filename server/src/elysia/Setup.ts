@@ -1,11 +1,9 @@
 import { Elysia } from 'elysia'
+import { prisma } from '../../prisma'
 import { client } from '../discord/Client'
-import { prisma } from '../prisma/Client'
 
-const databaseDecorator = new Elysia({ name: 'PrismaDecorator' })
-	.decorate('prisma', prisma)
+const usePrisma = () => new Elysia({ name: 'Prisma' }).decorate('prisma', prisma)
 
-const discordClientDecorator = new Elysia({ name: 'DiscordClientDecorator' })
-	.decorate('discordClient', client)
+const useDiscord = () => new Elysia({ name: 'Discord' }).decorate('discord', client)
 
-export { databaseDecorator, discordClientDecorator }
+export { usePrisma, useDiscord }

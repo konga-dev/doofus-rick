@@ -1,0 +1,11 @@
+{
+  "name": "@doofus-rick/prisma",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prisma": "bunx prisma generate"
+  },
+  "dependencies": {
+    "prisma": "^6.16.2"
+  }
+}
