@@ -21,7 +21,7 @@ jobs:
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
       - name: bun install
         run: |
-          cd web && bun i && cd ../server && bun i
+          cd web && bun i && cd ../server && bun i && bun run prisma
       - name: docker build
         run: |
           docker build -f web/Dockerfile . -t docker.pkg.github.com/konga-dev/doofus-rick/web:latest
