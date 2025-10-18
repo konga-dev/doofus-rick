@@ -8,7 +8,7 @@ on:
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
-    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    concurrency: ci-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
       - name: bun
@@ -21,7 +21,7 @@ jobs:
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
       - name: bun install
         run: |
-          cd web && bun i
+          cd web && bun i && cd ../server && bun i
       - name: docker build
         run: |
           docker build -f web/Dockerfile . -t docker.pkg.github.com/konga-dev/doofus-rick/web:latest
