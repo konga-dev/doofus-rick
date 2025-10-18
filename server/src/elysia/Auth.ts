@@ -4,7 +4,6 @@ import { prisma } from "../../prisma";
 
 const auth = betterAuth({
 	database: prismaAdapter(prisma, { provider: 'mongodb' }),
-	baseURL: 'http://localhost:3000',
 	emailAndPassword: {
 		enabled: false,
 	},
@@ -16,7 +15,8 @@ const auth = betterAuth({
 		},
 	},
 	trustedOrigins: [
-		'http://localhost:3001'
+		'http://localhost:3001',
+        'https://rick.konga.dev'
 	]
 })
 
