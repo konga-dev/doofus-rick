@@ -14,10 +14,7 @@ const server = new Elysia()
 	}))
 	.use(swagger())
 	.use(serverTiming())
-	.all('/api/auth/*', ({ request }) => {
-		console.log("Incoming cookies:", request.headers.get("cookie"));
-		return auth.handler(request)
-	})
+	.all('/api/auth/*', ({ request }) => auth.handler(request))
 	.get('/', ({ store: { name, version } }) => ({ name, version }))
 	.use(quotePlugin)
 	.use(discordPlugin)
