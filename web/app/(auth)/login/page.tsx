@@ -51,7 +51,7 @@ export default function SignIn() {
 							onClick={async () => {
 								await signIn.social({
 									provider: 'discord',
-									callbackURL: 'http://localhost:3001/',
+									callbackURL: process.env.NEXT_PUBLIC_FRONTEND,
 								})
 							}}
 						>
