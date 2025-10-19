@@ -16,7 +16,7 @@ const auth = betterAuth({
 	},
 	trustedOrigins: [
 		'http://localhost:3001',
-        'https://rick.konga.dev'
+    'https://rick.konga.dev'
 	]
 })
 
