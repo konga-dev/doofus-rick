@@ -15,7 +15,7 @@ interface AccessResult {
     hasAccess: boolean;
 }
 
-export const checkAccess = async (headers: ReadonlyHeaders) => {
+export const checkAccess: (headers: ReadonlyHeaders) => Promise<AccessResult> = async (headers: ReadonlyHeaders) => {
     const {data} = await getSession({
         fetchOptions: {
             headers
@@ -37,15 +37,15 @@ export const checkAccess = async (headers: ReadonlyHeaders) => {
         return {isSignedIn: false, hasAccess: false};
     }
 
-    const guilds = (await (
-        await fetch("https://discord.com/api/users/@me/guilds", {
-            headers: {
-                Authorization: `Bearer ${tokenData.data.accessToken}`,
-            },
-        })
-    ).json()) as Array<{ id: string }>;
+    const response = await fetch("https://discord.com/api/users/@me/guilds", {
+        headers: {
+            Authorization: `Bearer ${tokenData.data.accessToken}`,
+        },
+    });
 
-    if (!guilds.some((guild) => guild.id === GUILD_ID)) {
+    const guilds = await response.json();
+
+    if (!Array.isArray(guilds) || !guilds.some((guild) => guild?.id === GUILD_ID)) {
         return {isSignedIn: true, hasAccess: false};
     }
 
