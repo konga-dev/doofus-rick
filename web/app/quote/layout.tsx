@@ -4,6 +4,8 @@ import Navigation from '@/components/ui/navigation/navigation'
 import {NavigationProvider} from '@/components/ui/navigation/navigation-context'
 import RequiresAuth from "@/components/ui/auth/requires-auth";
 
+export const dynamic = 'force-dynamic'
+
 export default function QuoteLayout({
                                         children,
                                     }: {

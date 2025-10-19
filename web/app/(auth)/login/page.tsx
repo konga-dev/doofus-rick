@@ -4,12 +4,13 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} 
 import {cn} from '@/lib/utils'
 import SignInButton from "@/components/SignInButton";
 import {checkAccess} from "@/lib/auth-client";
-import {headers} from "next/headers";
+import {cookies, headers} from "next/headers";
 import {redirect} from "next/navigation";
 
 export const dynamic = 'force-dynamic'
 
 export default async function SignIn() {
+    await cookies()
     const access = await checkAccess(await headers())
 
     if (access.isSignedIn && access.hasAccess) {

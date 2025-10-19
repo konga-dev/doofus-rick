@@ -1,6 +1,6 @@
 import {redirect} from 'next/navigation'
 import type React from 'react'
-import {headers} from "next/headers";
+import {cookies, headers} from "next/headers";
 import {checkAccess} from "@/lib/auth-client";
 
 export default async function RequiresAuth({
@@ -8,6 +8,7 @@ export default async function RequiresAuth({
                                            }: {
     children: React.ReactNode
 }) {
+    await cookies()
     const access = await checkAccess(await headers())
 
     if (!access.isSignedIn) {
