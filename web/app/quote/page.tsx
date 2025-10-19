@@ -4,7 +4,7 @@ import {client} from "@/lib/treaty";
 export default async function Home() {
     const {data, error} = await client.quote.get()
 
-    if (error) {
+    if (error || !data) {
         return <h1>dei muada</h1>
     }
 
