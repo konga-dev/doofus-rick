@@ -19,9 +19,6 @@ jobs:
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
-      - name: bun install
-        run: |
-          cd web && bun i && cd ../server && bun i && bunx prisma generate
       - name: docker build
         run: |
           docker build -f web/Dockerfile . -t docker.pkg.github.com/konga-dev/doofus-rick/web:latest
@@ -40,9 +37,6 @@ jobs:
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           docker login https://docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASS
-      - name: bun install
-        run: |
-          cd server && bun i
       - name: docker build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
