@@ -21,14 +21,14 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../dropdown-menu'
-import { useSession, signOut } from '@/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
 
 export default function Navigation() {
 	const { extraItems } = useNavigation()
-	const { data: session } = useSession()
+	const { data: session } = authClient.useSession()
 
 	const handleLogout = async () => {
-		await signOut()
+		await authClient.signOut()
 		window.location.href = '/login'
 	}
 
@@ -78,7 +78,10 @@ export default function Navigation() {
 									All quotes that celebrate their cakeday
 									today.
 								</ListItem>
-								<ListItem href="/quote/self" title="Your quotes">
+								<ListItem
+									href="/quote/self"
+									title="Your quotes"
+								>
 									All the hilarious moments you've managed to
 									capture.
 								</ListItem>
@@ -129,7 +132,8 @@ export default function Navigation() {
 										alt={session.user.name || 'User'}
 									/>
 									<AvatarFallback>
-										{session.user.name?.[0]?.toUpperCase() || 'U'}
+										{session.user.name?.[0]?.toUpperCase() ||
+											'U'}
 									</AvatarFallback>
 								</Avatar>
 							</button>

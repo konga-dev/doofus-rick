@@ -1,31 +1,36 @@
-import type { Treaty } from '@elysiajs/eden'
-import { LucideQuote } from 'lucide-react'
+import type { Quote as QuoteModel } from '@prisma/client'
+import {
+	LucideChevronDown,
+	LucideChevronUp,
+	LucideQuote,
+	LucideShare,
+} from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import type { client } from '@/lib/treaty'
 
-type QuoteProps = Omit<Treaty.Data<typeof client.quote.get>[number], 'id'>
+type QuoteProps = Omit<QuoteModel, 'id' | 'creator' | 'participants'> & {
+	creator: { name: string; avatar: string }
+	participants: Array<{ name: string; avatar: string }>
+}
 
-const readableDate = (timestamp: number) => {
-	const quoteDate = new Date(timestamp)
-
+const readableDate = (timestamp: Date) => {
 	const weekday = new Intl.DateTimeFormat('en-US', {
 		weekday: 'long',
-	}).format(quoteDate)
+	}).format(timestamp)
 
 	const date = new Intl.DateTimeFormat('en-CA', {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit',
-	}).format(quoteDate)
+	}).format(timestamp)
 
 	const time = new Intl.DateTimeFormat('en-US', {
 		hour: '2-digit',
 		minute: '2-digit',
 		hour12: false,
-	}).format(quoteDate)
+	}).format(timestamp)
 
 	return `${weekday}, ${date.replace(/-/g, '/')} ${time}`
 }
@@ -44,23 +49,46 @@ export default function Quote({
 					<LucideQuote />
 				</div>
 			</CardHeader>
-			<CardContent className="whitespace-pre-line">
-				<ReactMarkdown remarkPlugins={[remarkGfm]}>
-					{content}
-				</ReactMarkdown>
-			</CardContent>
-			<CardFooter>
-				<div className="flex flex-col items-start text-neutral-400 md:flex-row md:items-center md:space-x-2">
-					<span>Captured by</span>
-					<div className="flex items-center gap-2">
-						<Avatar>
-							<AvatarImage
-								src={creator?.avatar}
-								alt={creator?.name}
-							/>
-							<AvatarFallback />
-						</Avatar>
+
+			<CardContent>
+				<div className="flex justify-between items-center">
+					<div className="whitespace-pre-line">
+						<ReactMarkdown remarkPlugins={[remarkGfm]}>
+							{content}
+						</ReactMarkdown>
 					</div>
+					<div className="flex flex-col items-center text-neutral-500 ml-4">
+						<button
+							type="button"
+							className="hover:text-orange-500 transition-colors cursor-pointer"
+							aria-label="Upvote"
+						>
+							<LucideChevronUp className="w-6 h-6" />
+						</button>
+						<span className="text-md font-medium text-neutral-400">
+							{votes}
+						</span>
+						<button
+							type="button"
+							className="hover:text-blue-500 transition-colors cursor-pointer"
+							aria-label="Downvote"
+						>
+							<LucideChevronDown className="w-6 h-6" />
+						</button>
+					</div>
+				</div>
+			</CardContent>
+
+			<CardFooter>
+				<div className="flex items-center text-neutral-400 space-x-2">
+					<span>Captured by</span>
+					<Avatar>
+						<AvatarImage
+							src={creator?.avatar}
+							alt={creator?.name}
+						/>
+						<AvatarFallback />
+					</Avatar>
 					<span>{creator?.name}</span>
 					<span>on {readableDate(timestamp)}</span>
 				</div>

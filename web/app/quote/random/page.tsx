@@ -1,30 +1,33 @@
-import type {Treaty} from '@elysiajs/eden'
-import {RandomQuoteButtonInjector} from '@/app/quote/random/random-quote-button'
+import { RandomQuoteButtonInjector } from '@/app/quote/random/random-quote-button'
 import Quote from '@/components/ui/quote/quote'
-import {client} from '@/lib/treaty'
+import { client } from '@/lib/rpc/orpc'
+import { prisma } from '@/prisma'
+import type { Quote as QuoteModel } from '@prisma/client'
 
 export default async function Random() {
-    const {data, error} = await client.quote.random.get()
+	const count = await prisma.quote.count()
+	const quote = (await prisma.quote.findFirst({
+		skip: Math.floor(Math.random() * count),
+	})) as QuoteModel
 
-    if (error || !data) {
-        return <div>dei muada</div>
-    }
+	const { creator, participants } = await client.find({
+		creator: quote.creator,
+		participants: quote.participants,
+	})
 
-    const quote = data as Treaty.Data<typeof client.quote.get>[number]
-
-    return (
-        <>
-            <RandomQuoteButtonInjector/>
-            <div className="flex items-center justify-center gap-4">
-                <Quote
-                    key={quote.id}
-                    content={quote.content}
-                    creator={quote.creator}
-                    timestamp={quote.timestamp}
-                    participants={quote.participants}
-                    votes={quote.votes}
-                />
-            </div>
-        </>
-    )
+	return (
+		<>
+			<RandomQuoteButtonInjector />
+			<div className="flex items-center justify-center gap-4">
+				<Quote
+					key={quote.id}
+					content={quote?.content}
+					creator={creator}
+					timestamp={quote.timestamp}
+					participants={participants}
+					votes={quote.votes}
+				/>
+			</div>
+		</>
+	)
 }

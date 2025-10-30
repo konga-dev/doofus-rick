@@ -2,9 +2,6 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import type React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import Navigation from '@/components/ui/navigation/navigation'
-import { NavigationProvider } from '@/components/ui/navigation/navigation-context'
 import { ThemeProvider } from '@/components/ui/theme/theme-provider'
 
 const geistSans = Geist({

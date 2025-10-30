@@ -1,53 +1,48 @@
-import {createAuthClient} from 'better-auth/react'
-import {ReadonlyHeaders} from "next/dist/server/web/spec-extension/adapters/headers";
+import { createAuthClient } from 'better-auth/react'
+import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
+import { auth } from './auth'
 
-const GUILD_ID = '691751152034906142'
-
-export const {signIn, useSession, signOut, getSession, getAccessToken} = createAuthClient({
-    baseURL: process.env.NEXT_PUBLIC_BACKEND,
-    fetchOptions: {
-        credentials: 'include'
-    }
+export const authClient = createAuthClient({
+	baseURL: process.env.BETTER_AUTH_URL,
 })
 
-interface AccessResult {
-    isSignedIn: boolean;
-    hasAccess: boolean;
-}
+export const checkAccess: (
+	headers: ReadonlyHeaders,
+) => Promise<{ isSignedIn: boolean; hasAccess: boolean }> = async (
+	headers: ReadonlyHeaders,
+) => {
+		const { data } = await authClient.getSession({
+			fetchOptions: {
+				headers,
+			},
+		})
 
-export const checkAccess: (headers: ReadonlyHeaders) => Promise<AccessResult> = async (headers: ReadonlyHeaders) => {
-    const {data} = await getSession({
-        fetchOptions: {
-            headers
-        },
-    });
+		if (!data || !data.user) {
+			return { isSignedIn: false, hasAccess: false }
+		}
 
-    if (!data || !data.user) {
-        return {isSignedIn: false, hasAccess: false};
-    }
+		const { accessToken } = await auth.api.getAccessToken({
+			body: {
+				providerId: 'discord',
+			},
+			headers,
+		})
 
-    const tokenData = await getAccessToken({
-        providerId: 'discord',
-        fetchOptions: {
-            headers
-        },
-    })
+		if (!accessToken) {
+			return { isSignedIn: false, hasAccess: false }
+		}
 
-    if (!tokenData?.data?.accessToken) {
-        return {isSignedIn: false, hasAccess: false};
-    }
+		const response = await fetch('https://discord.com/api/users/@me/guilds', {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		})
 
-    const response = await fetch("https://discord.com/api/users/@me/guilds", {
-        headers: {
-            Authorization: `Bearer ${tokenData.data.accessToken}`,
-        },
-    });
+		const guilds = await response.json()
 
-    const guilds = await response.json();
+		const isGuildMember =
+			Array.isArray(guilds) &&
+			guilds.some(guild => guild?.id === process.env.DISCORD_GUILD_ID)
 
-    if (!Array.isArray(guilds) || !guilds.some((guild) => guild?.id === GUILD_ID)) {
-        return {isSignedIn: true, hasAccess: false};
-    }
-
-    return {isSignedIn: true, hasAccess: true};
-}
+		return { isSignedIn: true, hasAccess: isGuildMember }
+	}
