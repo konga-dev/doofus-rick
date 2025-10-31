@@ -10,7 +10,10 @@ const handleRequest = async (request: Request) => {
 	})
 
 	return (
-		response ?? new Response('No suitable RPC route found', { status: 404 })
+		response ??
+		new Response(`No suitable RPC route found for ${request.url}`, {
+			status: 404,
+		})
 	)
 }
 
