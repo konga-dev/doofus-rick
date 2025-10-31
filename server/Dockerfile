@@ -14,4 +14,5 @@ FROM base AS runtime
 
 WORKDIR /app/server
 
+RUN date > ./docker-build-date
 CMD ["bun", "run", "index.ts"]

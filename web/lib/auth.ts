@@ -9,7 +9,7 @@ export const auth = betterAuth({
 	},
 	socialProviders: {
 		discord: {
-			clientId: process.env.DISCORD_CLIENT_ID as string,
+			clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
 			clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
 			scope: ['identify', 'email', 'guilds'],
 			mapProfileToUser: profile => {
