@@ -7,7 +7,7 @@ import {
 } from 'discord.js'
 import type { Command } from './command'
 
-export const noProductive: Command = {
+export const moveAll: Command = {
 	fire: async (interaction: ChatInputCommandInteraction): Promise<void> => {
 		const executor = interaction.member as GuildMember
 
