@@ -1,7 +1,7 @@
 import {
 	ChannelType,
 	type ChatInputCommandInteraction,
-	GuildMember,
+	type GuildMember,
 	SlashCommandBuilder,
 	type VoiceChannel,
 } from 'discord.js'
@@ -40,7 +40,7 @@ export const noProductive: Command = {
 		})
 	},
 	slashCommand: new SlashCommandBuilder()
-		.setName('noproductive')
+		.setName('moveall')
 		.setDescription(
 			'Moves all members of the current productive voice channel into the general area.',
 		)
