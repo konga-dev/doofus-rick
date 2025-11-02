@@ -1,4 +1,5 @@
 import { REST } from '@discordjs/rest'
+import Baker from 'cronbake'
 import {
 	ActivityType,
 	Client,
@@ -8,6 +9,7 @@ import {
 	Routes,
 	type TextChannel,
 } from 'discord.js'
+import { logger as pino } from '@/logger'
 import { client as rpc } from '../rpc/client'
 import * as chatCommands from './commands'
 import { isCommand } from './commands/command'
@@ -16,6 +18,10 @@ import {
 	QUOTE_MODAL_ID,
 	QUOTE_PARTICIPANTS_ID,
 } from './commands/quote-command'
+import * as recurringTasks from './tasks'
+import { isTask } from './tasks/task'
+
+const logger = pino.child({ namespace: 'Discord' })
 
 export const client = new Client({
 	intents: [
@@ -35,7 +41,9 @@ const commands = Object.values(chatCommands).filter(command =>
 
 // biome-ignore lint: Ignore value returned by console.log
 commands.forEach(command =>
-	console.log(`Registered command: ${command.slashCommand.name}`),
+	logger
+		.child({ module: 'ChatCommands' })
+		.info(`Registered command: ${command.slashCommand.name}`),
 )
 
 const rest = new REST({ version: '10' }).setToken(
@@ -50,7 +58,7 @@ await rest.put(
 	{ body: commands.map(command => command.slashCommand.toJSON()) },
 )
 
-console.log('Patched slash commands.')
+logger.child({ service: 'ChatCommands' }).info('Patched slash commands.')
 
 client.once('clientReady', () => {
 	client.user?.setPresence({
@@ -110,3 +118,12 @@ client.on('interactionCreate', async interaction => {
 		}
 	}
 })
+
+const baker = Baker.create()
+Object.values(recurringTasks)
+	.filter(task => isTask(task))
+	// biome-ignore lint: jop
+	.forEach(task => {
+		logger.child({ module: 'Tasks' }).info(`Registered task: ${task.name}`)
+		baker.add(task)
+	})

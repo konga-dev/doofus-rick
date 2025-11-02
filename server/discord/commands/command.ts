@@ -17,5 +17,5 @@ export type Command = z.infer<typeof CommandSchema> & {
 	fire: (interaction: ChatInputCommandInteraction) => Promise<void>
 }
 
-export const isCommand = (x: unknown): boolean =>
+export const isCommand = (x: unknown): x is Command =>
 	CommandSchema.safeParse(x).success

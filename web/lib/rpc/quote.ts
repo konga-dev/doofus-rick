@@ -10,6 +10,23 @@ export const random = os.handler(async () => {
 	})
 })
 
+export const cakeday = os.handler(async () => {
+	const quotes = await prisma.quote.findMany()
+	const today = new Date()
+
+	return quotes
+		.filter(
+			quote =>
+				quote.timestamp.getDate() === today.getDate() &&
+				quote.timestamp.getMonth() === today.getMonth() &&
+				quote.timestamp.getFullYear() < today.getFullYear(),
+		)
+		.map(quote => ({
+			...quote,
+			age: today.getFullYear() - quote.timestamp.getFullYear(),
+		}))
+})
+
 export const create = os
 	.input(
 		z.object({
