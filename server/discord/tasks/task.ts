@@ -1,4 +1,4 @@
-import Baker, { type CronOptions } from 'cronbake'
+import type { CronOptions } from 'cronbake'
 import z from 'zod'
 
 const TaskSchema = z.custom<CronOptions<string>>()

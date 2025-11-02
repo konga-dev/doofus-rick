@@ -1,11 +1,15 @@
 import type { TextChannel } from 'discord.js'
+import { logger as pino } from '../../logger'
 import { client as rpc } from '../../rpc/client'
 import { client } from '../client'
 import { quoteEmbeds } from '../util/embeds'
 import type { Task } from './task'
-import { logger as pino } from '@/logger'
 
-const logger = pino.child({ namespace: 'Discord', module: 'Tasks', service: 'Cakeday' })
+const logger = pino.child({
+	namespace: 'Discord',
+	module: 'Tasks',
+	service: 'Cakeday',
+})
 
 export const cakeDay: Task = {
 	name: 'cakeday',
@@ -15,7 +19,9 @@ export const cakeDay: Task = {
 			guild => guild.id === process.env.GUILD_ID,
 		)
 		if (!guild) {
-			logger.error('Could not find the specified guild. You should check [GUILD_ID] in your .env!')
+			logger.error(
+				'Could not find the specified guild. You should check [GUILD_ID] in your .env!',
+			)
 			return
 		}
 
@@ -23,7 +29,9 @@ export const cakeDay: Task = {
 			channel => channel.id === process.env.CAKEDAY_QUOTES_CHANNEL_ID,
 		) as TextChannel
 		if (!channel) {
-			logger.error('Could not find the specified channel. You should check [CAKEDAY_QUOTES_CHANNEL_ID] in your .env!')
+			logger.error(
+				'Could not find the specified channel. You should check [CAKEDAY_QUOTES_CHANNEL_ID] in your .env!',
+			)
 			return
 		}
 
@@ -57,5 +65,7 @@ export const cakeDay: Task = {
 		})
 	},
 	onComplete: () => logger.info('Celebrated cakedays without any incidents!'),
-	onError: (error) => { logger.error({ error }, 'An error occured while celebrating cakedays') },
+	onError: error => {
+		logger.error({ error }, 'An error occured while celebrating cakedays')
+	},
 }

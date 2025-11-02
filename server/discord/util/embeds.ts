@@ -1,5 +1,5 @@
-import type { client } from '@/rpc/client'
 import { EmbedBuilder } from 'discord.js'
+import type { client } from '../../rpc/client'
 
 type Prettify<T> = {
 	[K in keyof T]: T[K]

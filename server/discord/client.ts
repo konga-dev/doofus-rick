@@ -9,7 +9,7 @@ import {
 	Routes,
 	type TextChannel,
 } from 'discord.js'
-import { logger as pino } from '@/logger'
+import { logger as pino } from '../logger'
 import { client as rpc } from '../rpc/client'
 import * as chatCommands from './commands'
 import { isCommand } from './commands/command'

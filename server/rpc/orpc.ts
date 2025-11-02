@@ -3,7 +3,7 @@ import { RPCHandler } from '@orpc/server/fetch'
 import { CORSPlugin } from '@orpc/server/plugins'
 import z from 'zod'
 import { client } from '../discord/client'
-import { logger as pino } from '@/logger'
+import { logger as pino } from '../logger'
 
 const logger = pino.child({ module: 'oRPC' })
 
@@ -13,7 +13,9 @@ const all = os.handler(() => {
 	)
 
 	if (!guild) {
-		logger.error('Could not find the specified guild. You should check your .env!')
+		logger.error(
+			'Could not find the specified guild. You should check your .env!',
+		)
 		throw new ORPCError('Could not find guild.')
 	}
 
@@ -34,7 +36,9 @@ const find = os
 		)
 
 		if (!guild) {
-			logger.error('Could not find the specified guild. You should check your .env!')
+			logger.error(
+				'Could not find the specified guild. You should check your .env!',
+			)
 			throw new ORPCError('Could not find guild.')
 		}
 
@@ -42,8 +46,10 @@ const find = os
 			member => member.id === input.creator,
 		) ?? { displayName: 'Unknown', displayAvatarURL: () => '' }
 
-
-		logger.debug([input.creator, ...input.participants], 'Fetching data from users')
+		logger.debug(
+			[input.creator, ...input.participants],
+			'Fetching data from users',
+		)
 		return {
 			creator: {
 				name: creator.displayName,
