@@ -38,9 +38,9 @@ export const quote: Command = {
 								required: true,
 								placeholder:
 									placeholders[
-									Math.floor(
-										Math.random() * placeholders.length,
-									)
+										Math.floor(
+											Math.random() * placeholders.length,
+										)
 									],
 							},
 						],

@@ -11,38 +11,38 @@ export const checkAccess: (
 ) => Promise<{ isSignedIn: boolean; hasAccess: boolean }> = async (
 	headers: ReadonlyHeaders,
 ) => {
-		const { data } = await authClient.getSession({
-			fetchOptions: {
-				headers,
-			},
-		})
-
-		if (!data || !data.user) {
-			return { isSignedIn: false, hasAccess: false }
-		}
-
-		const { accessToken } = await auth.api.getAccessToken({
-			body: {
-				providerId: 'discord',
-			},
+	const { data } = await authClient.getSession({
+		fetchOptions: {
 			headers,
-		})
+		},
+	})
 
-		if (!accessToken) {
-			return { isSignedIn: false, hasAccess: false }
-		}
-
-		const response = await fetch('https://discord.com/api/users/@me/guilds', {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		})
-
-		const guilds = await response.json()
-
-		const isGuildMember =
-			Array.isArray(guilds) &&
-			guilds.some(guild => guild?.id === process.env.DISCORD_GUILD_ID)
-
-		return { isSignedIn: true, hasAccess: isGuildMember }
+	if (!data || !data.user) {
+		return { isSignedIn: false, hasAccess: false }
 	}
+
+	const { accessToken } = await auth.api.getAccessToken({
+		body: {
+			providerId: 'discord',
+		},
+		headers,
+	})
+
+	if (!accessToken) {
+		return { isSignedIn: false, hasAccess: false }
+	}
+
+	const response = await fetch('https://discord.com/api/users/@me/guilds', {
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+		},
+	})
+
+	const guilds = await response.json()
+
+	const isGuildMember =
+		Array.isArray(guilds) &&
+		guilds.some(guild => guild?.id === process.env.DISCORD_GUILD_ID)
+
+	return { isSignedIn: true, hasAccess: isGuildMember }
+}

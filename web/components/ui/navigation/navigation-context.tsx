@@ -6,7 +6,7 @@ import { createContext, useContext, useState } from 'react'
 const NavigationContext = createContext<{
 	extraItems: ReadonlyArray<React.ReactNode>
 	setExtraItems: (item: ReadonlyArray<React.ReactNode>) => void
-}>({ extraItems: [], setExtraItems: () => { } })
+}>({ extraItems: [], setExtraItems: () => {} })
 
 export function NavigationProvider({
 	children,

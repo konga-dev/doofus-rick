@@ -50,7 +50,7 @@ const find = os
 		}
 	})
 
-export const router = { all, find }
+export const router = os.router({ all, find })
 
 export const handler = new RPCHandler(router, {
 	plugins: [new CORSPlugin()],

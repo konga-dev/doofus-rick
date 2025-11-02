@@ -3,7 +3,7 @@ import {
 	EmbedBuilder,
 	SlashCommandBuilder,
 } from 'discord.js'
-import { client } from '../../rpc/client'
+import { client } from '@/rpc/client.ts'
 import type { Command } from './command'
 
 export const randomQuote: Command = {
